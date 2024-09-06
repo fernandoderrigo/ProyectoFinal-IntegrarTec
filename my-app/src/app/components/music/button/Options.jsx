@@ -1,11 +1,10 @@
-import NavBar from '@/app/components/nabigation-bar/NabigationBar';
-import PartialReproduction from '@/app/components/reproduction/full-reproduction/FullReproduction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 export default function search() {
   return (
     <>
-      <PartialReproduction />
-      <NavBar />
+      <FontAwesomeIcon icon={faEllipsis} />
     </>
   );
 }

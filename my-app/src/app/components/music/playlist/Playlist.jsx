@@ -12,7 +12,7 @@ const PLAYLISTS = [
   },
 ];
 
-export default function Songs() {
+export default function Playlist() {
   return (
     <>
       {PLAYLISTS.map(({ path, img, alt, name, advancement, id }) => {
