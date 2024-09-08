@@ -1,15 +1,14 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass } from '@fortawesome/react-fontawesome';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
-export default function SearchBar(){
-    return (
-      <>
-        <form action="">
-          <label htmlFor="">
-            <input type="text" />
-          </label>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </form>
-      </>
-    );
+export default function SearchBar() {
+  return (
+    <>
+      <form action="">
+        <label htmlFor="">
+          <input type="text" />
+        </label>
+        <MagnifyingGlassIcon />
+      </form>
+    </>
+  );
 }
