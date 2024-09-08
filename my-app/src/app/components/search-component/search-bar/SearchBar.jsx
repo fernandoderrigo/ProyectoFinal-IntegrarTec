@@ -5,6 +5,7 @@ export default function Search() {
     <label htmlFor="">
       <input/>
         <FaSearch size={24} color="gray" />
+
     </label>
   );
 }
