@@ -11,19 +11,19 @@ const LINKS = [
     icon: <FaSearch />,
   },
   {
-    path: faMagnifyingGlass,
+    path: '/',
     icon: <GoHomeFill />,
   },
   {
-    path: faMicrophone,
+    path: '/',
     icon: <MdKeyboardVoice />,
   },
   {
-    path: faBookmark,
+    path: '/my-playlist',
     icon: <ImBooks />,
   },
   {
-    path: faMusic,
+    path: '/my-creations',
     icon: <PiMusicNotesPlusFill/>,
   },
 ];
