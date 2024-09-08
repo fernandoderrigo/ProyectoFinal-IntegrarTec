@@ -1,12 +1,11 @@
-// import Link from 'next/link';
-import { faUser, faGear } from '@fortawesome/react-fontawesome';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaUser } from 'react-icons/fa';
+import { IoSettings } from 'react-icons/io5';
 
 export default function Header() {
   return (
     <header>
-      <FontAwesomeIcon icon={faUser}/>
-      <FontAwesomeIcon icon={faGear}/>
+      <FaUser />
+      <IoSettings />
     </header>
   );
 }

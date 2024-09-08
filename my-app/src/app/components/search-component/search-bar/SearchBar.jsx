@@ -1,9 +1,11 @@
-import { FaSearch } from "react-icons/fa"; 
+import { FaSearch } from 'react-icons/fa';
 
-export default function Search() { 
+export default function Search() {
   return (
-    <button>
-      <FaSearch size={24} color="gray" /> {}
-    </button>
+    <label htmlFor="">
+      <input>
+        <FaSearch size={24} color="gray" /> {}
+      </input>
+    </label>
   );
 }

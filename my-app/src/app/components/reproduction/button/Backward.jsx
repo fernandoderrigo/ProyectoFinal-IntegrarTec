@@ -3,7 +3,7 @@ import { FaStepBackward } from "react-icons/fa";
 export default function BackWard() { 
   return (
     <buttom>
-      <FaStepBackward size={24} color="gray" />
+      <FaStepBackward size={23} color="gray" />
     </buttom>
   );
 }

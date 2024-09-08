@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { SlOptions } from 'react-icons/sl';
 
 export default function search() {
   return (
     <>
-      <FontAwesomeIcon icon={faEllipsis} />
+      <SlOptions />
     </>
   );
 }

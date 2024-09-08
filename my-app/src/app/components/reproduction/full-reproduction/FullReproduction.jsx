@@ -1,18 +1,24 @@
 import Play from '../button/Play';
-import Add from '../button/Add';
+import AddSong from '../button/Add';
 import Pause from '../button/Pause';
 import Forward from '../button/Forward';
-import Backward from '../button/Backward';
+import BackWard from '../button/Backward';
 import Share from '../button/Share';
+import RepeatAll from '../button/RepeatAll';
+import RepeatOne from '../button/RepeatOne';
+import Shuffle from '../button/Shuffle';
 
 export default function FullReproduction() {
   return (
     <section>
       <button>
+        <Shuffle/>
+      </button>
+      <button>
         <Share />
       </button>
       <button>
-        <Backward />
+        <BackWard />
       </button>
       <button>
         <Play />
@@ -21,7 +27,10 @@ export default function FullReproduction() {
         <Forward />
       </button>
       <button>
-        <Add />
+        <RepeatAll />
+      </button>
+      <button>
+        <AddSong />
       </button>
     </section>
   );
