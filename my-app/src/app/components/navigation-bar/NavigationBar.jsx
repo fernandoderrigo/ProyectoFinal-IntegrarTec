@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FaSearch } from 'react-icons/fa';
 import { GoHomeFill } from 'react-icons/go';
 import { MdKeyboardVoice } from 'react-icons/md';

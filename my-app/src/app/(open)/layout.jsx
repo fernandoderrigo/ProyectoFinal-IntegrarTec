@@ -1,4 +1,4 @@
-import NavBar from '@/app/components/nabigation-bar/NabigationBar';
+import NavBar from '@/app/components/navigation-bar/NavigationBar';
 import Header from '../components/header/Header';
 import PartialReproduction from '@/app/components/reproduction/partial-reproduction/PartialReproduction';
 
