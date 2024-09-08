@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRepeat } from '@fortawesome/free-solid-svg-icons';
+import { MdOutlineRepeatOne } from "react-icons/md";
 
-export default function Repeat() {
+export default function RepeatOne() {
   return (
-    <>
-      <FontAwesomeIcon icon={faRepeat} />
-    </>
+    <button>
+      <MdOutlineRepeatOne size={24} color="gray" />
+    </button>
   );
 }

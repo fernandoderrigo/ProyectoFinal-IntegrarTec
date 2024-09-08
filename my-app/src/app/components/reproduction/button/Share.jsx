@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { FaShare } from "react-icons/fa";
 
 export default function Share() {
   return (
-    <>
-      <FontAwesomeIcon icon={faShareNodes} />
-    </>
+    <button>
+      <FaShare size={24} color="gray" />
+    </button>
   );
 }

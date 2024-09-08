@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { FaPause } from "react-icons/fa6";
 
 export default function Pause() {
   return (
-    <>
-      <FontAwesomeIcon icon={faCirclePlay} />
-    </>
+    <button>
+      <FaPause size={24} color="gray" />
+    </button>
   );
 }

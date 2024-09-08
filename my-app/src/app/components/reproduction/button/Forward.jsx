@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForwardStep } from '@fortawesome/free-solid-svg-icons';
+import { FaStepForward } from "react-icons/fa";
 
 export default function Forward() {
   return (
-    <>
-      <FontAwesomeIcon icon={faForwardStep} />
-    </>
+    <button>
+      <FaStepForward size={24} color="gray" />
+    </button>
   );
 }

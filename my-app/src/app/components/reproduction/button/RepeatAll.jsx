@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRepeat } from '@fortawesome/free-solid-svg-icons';
+import { IoMdRepeat } from "react-icons/io";
 
 export default function Repeat() {
   return (
-    <>
-      <FontAwesomeIcon icon={faRepeat} />
-    </>
+    <button>
+      <IoMdRepeat size={24} color="gray" />
+    </button>
   );
 }
