@@ -1,9 +1,9 @@
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { MdOutlinePlaylistAdd } from "react-icons/md";
 
-export default function Repeat() {
+export default function AddSong() { 
   return (
-    <>
-      <PlusIcon/>
-    </>
+    <buttom>
+      <MdOutlinePlaylistAdd size={24} color="gray" />
+    </buttom>
   );
 }

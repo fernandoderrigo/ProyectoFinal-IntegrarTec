@@ -1,9 +1,9 @@
-import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/solid';
+import { MdOutlineRepeatOne } from "react-icons/md";
 
-export default function Play() {
+export default function RepeatOne() {
   return (
-    <>
-      <ArrowPathRoundedSquareIcon />
-    </>
+    <button>
+      <MdOutlineRepeatOne size={24} color="gray" />
+    </button>
   );
 }

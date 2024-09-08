@@ -1,6 +1,7 @@
-import { BackwardIcon } from '@heroicons/react/24/solid';
+import { FaStepBackward } from "react-icons/fa";
 
-export default function Backward() {
+
+export default function BackWard() { 
   return (
     <>
       <BackwardIcon />

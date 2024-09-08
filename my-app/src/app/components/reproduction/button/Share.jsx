@@ -1,9 +1,9 @@
-import { ShareIcon } from '@heroicons/react/24/solid';
+import { FaShare } from "react-icons/fa";
 
 export default function Share() {
   return (
-    <>
-      <ShareIcon />
-    </>
+    <button>
+      <FaShare size={24} color="gray" />
+    </button>
   );
 }

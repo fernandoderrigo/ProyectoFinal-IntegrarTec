@@ -1,3 +1,5 @@
+import { IoMdAdd } from "react-icons/io";
+
 const TAGS = [
   {
     tagName: 'Gatito',
@@ -19,6 +21,10 @@ export default function Tags() {
           </section>
         );
       })}
+          <button>
+      <IoMdAdd size={24} color="gray" />
+    </button>
     </>
+    
   );
 }

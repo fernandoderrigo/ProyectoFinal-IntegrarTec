@@ -1,9 +1,10 @@
-import { ForwardIcon } from '@heroicons/react/24/solid';
+
+import { FaStepForward } from "react-icons/fa";
 
 export default function Forward() {
   return (
-    <>
-      <ForwardIcon />
-    </>
+    <button>
+      <FaStepForward size={24} color="gray" />
+    </button>
   );
 }

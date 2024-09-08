@@ -1,14 +1,9 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { FaSearch } from "react-icons/fa"; 
 
-export default function SearchBar() {
+export default function Search() { 
   return (
-    <>
-      <form action="">
-        <label htmlFor="">
-          <input type="text" />
-        </label>
-        <MagnifyingGlassIcon />
-      </form>
-    </>
+    <button>
+      <FaSearch size={24} color="gray" /> {}
+    </button>
   );
 }
