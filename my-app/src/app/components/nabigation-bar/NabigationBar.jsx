@@ -7,24 +7,24 @@ import { PiMusicNotesPlusFill } from 'react-icons/pi';
 
 const LINKS = [
   {
-    icon: faHouse,
-    path: <FaSearch />,
+    path: '/search',
+    icon: <FaSearch />,
   },
   {
-    icon: faMagnifyingGlass,
-    path: <GoHomeFill />,
+    path: faMagnifyingGlass,
+    icon: <GoHomeFill />,
   },
   {
-    icon: faMicrophone,
-    path: <MdKeyboardVoice />,
+    path: faMicrophone,
+    icon: <MdKeyboardVoice />,
   },
   {
-    icon: faBookmark,
-    path: <ImBooks />,
+    path: faBookmark,
+    icon: <ImBooks />,
   },
   {
-    icon: faMusic,
-    path: <PiMusicNotesPlusFill/>,
+    path: faMusic,
+    icon: <PiMusicNotesPlusFill/>,
   },
 ];
 
@@ -36,7 +36,7 @@ export default function NavBar() {
           return (
             <li key={path}>
               <Link href={path}>
-                <FontAwesomeIcon icon={icon} />
+                {icon}
               </Link>
             </li>
           );
