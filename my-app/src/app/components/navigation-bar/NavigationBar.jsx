@@ -4,7 +4,6 @@ import { GoHomeFill } from 'react-icons/go';
 import { MdKeyboardVoice } from 'react-icons/md';
 import { ImBooks } from 'react-icons/im';
 import { PiMusicNotesPlusFill } from 'react-icons/pi';
-import Link from 'next/link'
 
 const LINKS = [
   {
