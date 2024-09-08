@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRepeat } from '@fortawesome/free-solid-svg-icons';
+import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/solid';
 
-export default function Repeat() {
+export default function Play() {
   return (
     <>
-      <FontAwesomeIcon icon={faRepeat} />
+      <ArrowPathRoundedSquareIcon />
     </>
   );
 }

@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faBackwardStep } from '@fortawesome/free-solid-svg-icons';
+import { BackwardIcon } from '@heroicons/react/24/solid';
 
 export default function Backward() {
   return (
     <>
-      <FontAwesomeIcon icon={faBackwardStep} />
+      <BackwardIcon />
     </>
   );
 }

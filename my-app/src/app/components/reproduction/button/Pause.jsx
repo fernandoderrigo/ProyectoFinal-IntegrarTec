@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { PauseCircleIcon } from '@heroicons/react/24/solid';
 
 export default function Pause() {
   return (
     <>
-      <FontAwesomeIcon icon={faCirclePlay} />
+      <PauseCircleIcon />
     </>
   );
 }

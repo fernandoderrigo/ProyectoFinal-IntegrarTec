@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlay } from '@fortawesome/free-solid-svg-icons'; 
+import { PlayCircleIcon } from '@heroicons/react/24/solid';
 
-export default function Play (){
-    return (
-      <>
-        <FontAwesomeIcon icon={faCirclePlay} />
-      </>
-    );
+export default function Play() {
+  return (
+    <>
+      <PlayCircleIcon />
+    </>
+  );
 }

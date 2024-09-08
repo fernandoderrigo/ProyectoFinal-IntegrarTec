@@ -1,10 +1,9 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForwardStep } from '@fortawesome/free-solid-svg-icons';
+import { ForwardIcon } from '@heroicons/react/24/solid';
 
 export default function Forward() {
   return (
     <>
-      <FontAwesomeIcon icon={faForwardStep} />
+      <ForwardIcon />
     </>
   );
 }
