@@ -1,33 +1,30 @@
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHouse,
-  faMagnifyingGlass,
-  faMicrophone,
-  faBookmark,
-  faMusic,
-} from '@fortawesome/free-solid-svg-icons';
+import { FaSearch } from 'react-icons/fa';
+import { GoHomeFill } from 'react-icons/go';
+import { MdKeyboardVoice } from 'react-icons/md';
+import { ImBooks } from 'react-icons/im';
+import { PiMusicNotesPlusFill } from 'react-icons/pi';
+
 
 const LINKS = [
   {
     icon: faHouse,
-    path: '/search',
+    path: <FaSearch />,
   },
   {
     icon: faMagnifyingGlass,
-    path: '/home',
+    path: <GoHomeFill />,
   },
   {
     icon: faMicrophone,
-    path: '/voice',
+    path: <MdKeyboardVoice />,
   },
   {
     icon: faBookmark,
-    path: '/my-playlist',
+    path: <ImBooks />,
   },
   {
     icon: faMusic,
-    path: '/my-songs',
+    path: <PiMusicNotesPlusFill/>,
   },
 ];
 
