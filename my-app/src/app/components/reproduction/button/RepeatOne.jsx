@@ -1,9 +1,9 @@
-import { MdOutlineRepeatOne } from "react-icons/md";
+import { LuRepeat1 } from "react-icons/lu";
 
 export default function RepeatOne() {
   return (
     <button>
-      <MdOutlineRepeatOne size={24} color="gray" />
+      <LuRepeat1 size={24} color="gray" />
     </button>
   );
 }

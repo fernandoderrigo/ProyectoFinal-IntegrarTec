@@ -10,28 +10,21 @@ import Shuffle from '../button/Shuffle';
 
 export default function FullReproduction() {
   return (
-    <section>
-      <button>
-        <Shuffle/>
-      </button>
-      <button>
-        <Share />
-      </button>
-      <button>
-        <BackWard />
-      </button>
-      <button>
-        <Play />
-      </button>
-      <button>
-        <Forward />
-      </button>
-      <button>
-        <RepeatAll />
-      </button>
-      <button>
-        <AddSong />
-      </button>
+    <section className="flex-row">
+      <Shuffle />
+
+      <Share />
+
+      <BackWard />
+
+      <Play />
+
+      <Forward />
+
+      <RepeatAll />
+      <RepeatOne />
+
+      <AddSong />
     </section>
   );
 }

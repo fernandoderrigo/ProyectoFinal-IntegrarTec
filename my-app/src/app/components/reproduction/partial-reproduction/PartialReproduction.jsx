@@ -6,15 +6,13 @@ import Expand from '../button/Expand';
 export default function PartialReproduction() {
   return (
     <section>
-      <button>
+    
         <Expand />
-      </button>
-      <button>
+      
         <Play />
-      </button>
-      <button>
+      
         <AddSong />
-      </button>
+      
     </section>
   );
 }

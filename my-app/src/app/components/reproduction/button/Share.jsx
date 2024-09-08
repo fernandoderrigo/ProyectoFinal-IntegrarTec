@@ -1,9 +1,9 @@
-import { FaShare } from "react-icons/fa";
+import { IoMdShare } from 'react-icons/io';
 
 export default function Share() {
   return (
     <button>
-      <FaShare size={24} color="gray" />
+      <IoMdShare size={24} color="gray" />
     </button>
   );
 }

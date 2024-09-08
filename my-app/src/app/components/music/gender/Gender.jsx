@@ -13,13 +13,13 @@ const GENDER = [
 export default function Gender() {
   return (
     <>
-      {GENDER.map(({ path, gender, img, alt, id }) => {
+      {GENDER.map(({ path, gender, alt, id }) => {
         return (
           <article key={id}>
             <Link href={path}>
               <h2>{gender}</h2>
               <picture>
-                <img src={img} alt={alt} />
+                <img src='' alt={alt} />
               </picture>
             </Link>
           </article>

@@ -20,7 +20,7 @@ export default function Playlist() {
           <article key={id}>
             <Link href={path}>
               <picture>
-                <img src={img} alt={alt} />
+                <img src='' alt={alt} />
               </picture>
               <section>
                 <h2>{name}</h2>

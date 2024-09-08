@@ -1,9 +1,9 @@
-import { IoMdRepeat } from "react-icons/io";
+import { LuRepeat } from 'react-icons/lu';
 
 export default function RepeatAll() {
   return (
     <button>
-      <IoMdRepeat size={24} color="gray" />
+      <LuRepeat size={24} color="gray" />
     </button>
   );
 }
