@@ -8,11 +8,11 @@ import { PiMusicNotesPlusFill } from 'react-icons/pi';
 const LINKS = [
   {
     path: '/search',
-    icon: <FaSearch className="text-3xl leading-5 " />,
+    icon: <FaSearch className="basic-button" />,
   },
   {
     path: '/',
-    icon: <GoHomeFill className="text-3xl leading-5" />,
+    icon: <GoHomeFill className="basic-button" />,
   },
   {
     path: '/',
@@ -20,11 +20,11 @@ const LINKS = [
   },
   {
     path: '/my-playlist',
-    icon: <ImBooks className="text-3xl leading-5" />,
+    icon: <ImBooks className="basic-button" />,
   },
   {
     path: '/my-creations',
-    icon: <PiMusicNotesPlusFill className="text-3xl leading-5" />,
+    icon: <PiMusicNotesPlusFill className="basic-button" />,
   },
 ];
 

@@ -4,7 +4,7 @@ const GENDER = [
   {
     path: '/',
     gender: 'gatito',
-    img: '../../../../../public/img/gatito.jpeg',
+    img: '/img/gatito.jpeg',
     alt: 'foto de un gatito',
     id: 'gatito 3',
   },
@@ -13,13 +13,13 @@ const GENDER = [
 export default function Gender() {
   return (
     <>
-      {GENDER.map(({ path, gender, alt, id }) => {
+      {GENDER.map(({ path, img, gender, alt, id }) => {
         return (
-          <article key={id}>
+          <article key={id} className="w-1/4 flex flex-row overflow-hidden">
             <Link href={path}>
               <h2>{gender}</h2>
-              <picture>
-                <img src='' alt={alt} />
+              <picture className="rotate-45 overflow-hidden rounded-xl">
+                <img src={img} alt={alt} className="object-cover " />
               </picture>
             </Link>
           </article>

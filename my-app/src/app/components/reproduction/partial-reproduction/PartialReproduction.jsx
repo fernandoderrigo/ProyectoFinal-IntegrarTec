@@ -5,14 +5,12 @@ import Expand from '../button/Expand';
 
 export default function PartialReproduction() {
   return (
-    <section>
-    
-        <Expand />
-      
-        <Play />
-      
-        <AddSong />
-      
+    <section className="flex flex-row w-full">
+      <Expand className="basic-reproduction-button" />
+
+      <Play className="basic-reproduction-button" />
+
+      <AddSong className="basic-reproduction-button" />
     </section>
   );
 }

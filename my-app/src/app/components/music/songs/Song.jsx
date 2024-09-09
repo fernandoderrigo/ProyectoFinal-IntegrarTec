@@ -17,16 +17,16 @@ export default function Songs() {
     <>
       {SONGS.map(({ path, img, alt, name, artist, id}) => {
         return (
-          <article key={id}>
+          <article key={id} className="w-full">
             <Link href={path}>
-              <picture>
+              <picture className="w-2/5 aspect-square rounded-lg">
                 <img src={img} alt={alt} />
               </picture>
-              <section>
+              <section className="w-2/5">
                 <h2>{name}</h2>
                 <p>{artist}</p>
               </section>
-              <button>
+              <button className="w-1/5">
                 <Options />
               </button>
             </Link>

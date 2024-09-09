@@ -10,19 +10,19 @@ import Shuffle from '../button/Shuffle';
 
 export default function FullReproduction() {
   return (
-    <section className="flex-row">
-      <Shuffle />
+    <section className="flex flex-row w-full">
+      <Shuffle className="full-reproduction-button" />
 
-      <Share />
+      <Share className="full-reproduction-button" />
 
-      <BackWard />
+      <BackWard className="full-reproduction-button" />
 
-      <Play />
+      <Play className="full-reproduction-button" />
 
-      <Forward />
+      <Forward className="full-reproduction-button" />
 
-      <RepeatAll />
-      <RepeatOne />
+      <RepeatAll className="full-reproduction-button" />
+      <RepeatOne className="full-reproduction-button" />
 
       <AddSong />
     </section>

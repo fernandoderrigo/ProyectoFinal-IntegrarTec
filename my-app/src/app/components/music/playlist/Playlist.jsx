@@ -4,7 +4,7 @@ import Options from '../button/Options';
 const PLAYLISTS = [
   {
     path: '/',
-    img: '../../../../../public/img/gatito.jpeg',
+    img: '/img/gatito.jpeg',
     alt: 'foto de gatito',
     name: 'gatito',
     advancement: 'es un gatito',
@@ -17,16 +17,16 @@ export default function Playlist() {
     <>
       {PLAYLISTS.map(({ path, img, alt, name, advancement, id }) => {
         return (
-          <article key={id}>
+          <article key={id} className="w-full">
             <Link href={path}>
-              <picture>
-                <img src='' alt={alt} />
+              <picture className="w-2/5 aspect-square rounded-lg">
+                <img src={img} alt={alt} />
               </picture>
-              <section>
+              <section className='w-2/5'>
                 <h2>{name}</h2>
                 <p>{advancement}</p>
               </section>
-              <button>
+              <button className='w-1/5'>
                 <Options />
               </button>
             </Link>
