@@ -1,6 +1,6 @@
 const ARTIST = [
   {
-    img: '../../../../../public/img/gatito.jpeg',
+    img: '/img/gatito.jpeg',
     alt: 'foto de un gatito',
     id: 'gatito 4',
   },

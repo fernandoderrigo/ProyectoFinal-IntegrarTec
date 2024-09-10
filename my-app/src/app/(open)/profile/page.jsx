@@ -14,7 +14,7 @@ const LINKS = [
     label: 'Editar perfil',
   },
   {
-    path: '/profile/setting',
+    path: '/profile/user-setting',
     icon: <MdSettings />,
     label: 'Configuración',
   },
