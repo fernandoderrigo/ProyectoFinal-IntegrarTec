@@ -6,9 +6,11 @@ export default function LayoutOpen({ children }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
-      <Reproduction />
-      <NavBar />
+      <main className="mt-10 mb-16">{children}</main>
+      <footer className="fixed bottom-0 w-full">
+        <Reproduction />
+        <NavBar />
+      </footer>
     </>
   );
 }

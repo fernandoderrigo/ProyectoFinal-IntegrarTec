@@ -7,24 +7,33 @@ import Share from '../button/Share';
 import RepeatAll from '../button/RepeatAll';
 import RepeatOne from '../button/RepeatOne';
 import Shuffle from '../button/Shuffle';
+import TransparentHeader from '../../header/TransparentHeader';
 
 export default function FullReproduction() {
   return (
-    <section className="flex flex-row w-full">
-      <Shuffle className="full-reproduction-button" />
+    <>
+      <section>
+        <article>
+          <TransparentHeader />
+        </article>
+        <article className="flex flex-row w-full">
+          <audio src=""></audio>
+          <Shuffle className="full-reproduction-button" />
 
-      <Share className="full-reproduction-button" />
+          <Share className="full-reproduction-button" />
 
-      <BackWard className="full-reproduction-button" />
+          <BackWard className="full-reproduction-button" />
 
-      <Play className="full-reproduction-button" />
+          <Play className="full-reproduction-button" />
 
-      <Forward className="full-reproduction-button" />
+          <Forward className="full-reproduction-button" />
 
-      <RepeatAll className="full-reproduction-button" />
-      <RepeatOne className="full-reproduction-button" />
+          <RepeatAll className="full-reproduction-button" />
+          <RepeatOne className="full-reproduction-button" />
 
-      <AddSong />
-    </section>
+          <AddSong />
+        </article>
+      </section>
+    </>
   );
 }

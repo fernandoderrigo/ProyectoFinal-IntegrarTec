@@ -5,40 +5,35 @@ import { MdKeyboardVoice } from 'react-icons/md';
 import { ImBooks } from 'react-icons/im';
 import { PiMusicNotesPlusFill } from 'react-icons/pi';
 
-const LINKS = [
-  {
-    path: '/search',
-    icon: <FaSearch className="basic-button" />,
-  },
-  {
-    path: '/',
-    icon: <GoHomeFill className="basic-button" />,
-  },
-  {
-    path: '/',
-    icon: <MdKeyboardVoice className="text-5xl" />,
-  },
-  {
-    path: '/my-playlist',
-    icon: <ImBooks className="basic-button" />,
-  },
-  {
-    path: '/my-creations',
-    icon: <PiMusicNotesPlusFill className="basic-button" />,
-  },
-];
-
 export default function NavBar() {
   return (
-    <nav className="w-full bg-gradient-to-t from-indigo-500">
-      <ul className="flex flex-row items-end justify-around w-full">
-        {LINKS.map(({ icon, path }) => {
-          return (
-            <li key={path} className="mb-2">
-              <Link href={path}>{icon}</Link>
-            </li>
-          );
-        })}
+    <nav className="w-full">
+      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-7 bg-gradient-to-t from-indigo-500 to-transparent">
+        <li className="flex items-center justify-center basic-button">
+          <Link href="/search">
+            <FaSearch className="" />
+          </Link>
+        </li>
+        <li className="flex items-center justify-center basic-button">
+          <Link href="/">
+            <GoHomeFill className="" />
+          </Link>
+        </li>
+        <li className="flex items-center justify-center">
+          <button>
+            <MdKeyboardVoice className="text-5xl " />
+          </button>
+        </li>
+        <li className="flex items-center justify-center basic-button">
+          <Link href="/my-playlists">
+            <ImBooks className="" />
+          </Link>
+        </li>
+        <li className="flex items-center justify-center basic-button">
+          <Link href="/my-creations">
+            <PiMusicNotesPlusFill className="" />
+          </Link>
+        </li>
       </ul>
     </nav>
   );
