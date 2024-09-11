@@ -1,6 +1,6 @@
-import NavBar from '@/app/components/navigation-bar/NavigationBar';
-import Header from '../components/header/Header';
-import Reproduction from '../components/reproduction/Reproduction';
+import NavBar from '@/components/common/navigation-bar/NavigationBar';
+import Header from '../../components/profile/header/Header';
+import Reproduction from '../../components/common/reproduction/Reproduction';
 
 export default function LayoutOpen({ children }) {
   return (

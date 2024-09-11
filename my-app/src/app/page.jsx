@@ -1,9 +1,9 @@
-import Songs from './components/music/songs/Song';
-import Gender from './components/music/gender/Gender';
-import Playlist from './components/music/playlist/Playlist';
-import Reproduction from './components/reproduction/Reproduction';
-import Header from './components/header/Header';
-import NavBar from './components/navigation-bar/NavigationBar';
+import Songs from '../components/common/music/songs/Song';
+import Gender from '../components/common/music/gender/Gender';
+import Playlist from '../components/common/music/playlist/Playlist';
+import Reproduction from '../components/common/reproduction/Reproduction';
+import Header from '../components/profile/header/Header';
+import NavBar from '../components/common/navigation-bar/NavigationBar';
 
 export default async function Page() {
   // let data = await fetch('http://localhost:3001/api/index');
