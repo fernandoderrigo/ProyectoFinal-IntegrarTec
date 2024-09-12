@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .basic-button {
-  @apply p-px text-3xl leading-5;
+  @apply p-px text-3xl ;
 }
 
 .basic-reproduction-button {
@@ -12,4 +12,8 @@
 
 .full-reproduction-button {
   @apply p-px text-2xl;
+}
+
+.basic-header {
+  @apply fixed top-0 w-full p-3;
 }
