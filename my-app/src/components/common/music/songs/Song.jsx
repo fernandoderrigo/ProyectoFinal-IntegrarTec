@@ -38,7 +38,7 @@ const SONGS = [
 
 export default function Songs() {
   return (
-    <>
+    <section className='col-span-4'>
       {SONGS.map(({ path, img, alt, name, artist, id }) => {
         return (
           <article key={id} className="flex w-full flex-col gap-4 px-4 py-5">
@@ -60,6 +60,6 @@ export default function Songs() {
           </article>
         );
       })}
-    </>
+    </section>
   );
 }

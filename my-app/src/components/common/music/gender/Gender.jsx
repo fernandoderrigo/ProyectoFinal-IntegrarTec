@@ -33,8 +33,7 @@ const GENDER = [
 
 export default function Gender() {
   return (
-    <>
-      <article className="grid w-full grid-cols-2 gap-4 px-4 py-5">
+      <article className="grid w-full grid-cols-2 gap-4 px-4 py-5 col-span-4">
         {GENDER.map(({ path, img, gender, alt, id }) => {
           return (
             <Link
@@ -56,6 +55,5 @@ export default function Gender() {
           );
         })}
       </article>
-    </>
   );
 }

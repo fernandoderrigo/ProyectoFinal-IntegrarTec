@@ -13,7 +13,7 @@ const TAGS = [
 
 export default function Tags() {
   return (
-    <>
+    <article className="col-span-4">
       {TAGS.map(({ tagName, id }) => {
         return (
           <section key={id}>
@@ -21,10 +21,9 @@ export default function Tags() {
           </section>
         );
       })}
-          <button>
+    <button>
       <IoMdAdd size={24} color="gray" />
     </button>
-    </>
-    
+    </article>
   );
 }

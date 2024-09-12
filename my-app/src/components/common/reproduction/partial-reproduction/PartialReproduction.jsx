@@ -5,7 +5,7 @@ import Expand from '../button/Expand';
 
 export default function PartialReproduction() {
   return (
-    <>
+    <section className='col-span-4'>
       <button>
         <picture>
           <img src="" alt="" />
@@ -19,6 +19,6 @@ export default function PartialReproduction() {
 
         <AddSong className="basic-reproduction-button" />
       </section>
-    </>
+    </section>
   );
 }
