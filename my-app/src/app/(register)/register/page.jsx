@@ -54,11 +54,6 @@ export default function Register() {
           Cancelar <FaTimes className="ml-1.25" />
         </button>
       </div>
-
-      {/* Microphone Icon */}
-      <div className="mt-5 p-5">
-        <FaMicrophone className="text-white text-2xl" />
-      </div>
     </div>
   );
 }

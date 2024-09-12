@@ -14,7 +14,8 @@ export default function Config() {
   };
 
   return (
-    <nav className="w-full h-full bg-black text-white p-5 flex flex-col justify-between">
+    <section className='col-span-4'>
+          <nav className="w-full h-full bg-black text-white p-5 flex flex-col justify-between">
       {/* Profile Section */}
       <div className="flex items-center justify-between bg-[#2D2C79] p-3 rounded-lg mb-5">
         <div className="w-16 h-16 bg-gray-500 rounded-full"></div>
@@ -53,11 +54,7 @@ export default function Config() {
           </div>
         ))}
       </div>
-
-      {/* Microphone Icon */}
-      <div className="flex justify-center p-5">
-        <MdKeyboardVoice className="text-white text-2xl" />
-      </div>
     </nav>
+    </section>
   );
 }

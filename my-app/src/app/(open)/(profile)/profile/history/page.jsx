@@ -6,10 +6,13 @@ import Tags from '@/components/common/search-component/filter/Filter';
 export default function search() {
   return (
     <>
+    <section className='col-span-4'>
+
       <HeaderProfile />
       <Search />
       <Tags/>
       <Songs />
+    </section>
     </>
   );
 }

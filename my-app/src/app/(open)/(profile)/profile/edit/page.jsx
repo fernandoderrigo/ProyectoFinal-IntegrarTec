@@ -3,7 +3,7 @@ import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 
 export default function Register() {
   return (
-    <div className="bg-black text-white h-screen p-5 flex flex-col justify-between items-center">
+    <div className="col-span-4 bg-black text-white h-screen p-5 flex flex-col justify-between items-center">
       {/* Profile Picture and Close Icon */}
       <div className="w-full flex justify-center items-center relative">
         <div className="w-16 h-16 bg-gray-500 rounded-full mb-5"></div>
@@ -30,11 +30,6 @@ export default function Register() {
         <button className="flex-1 ml-2 p-2 bg-red-500 text-white rounded-lg flex justify-center items-center cursor-pointer">
           Cancelar <FaTimes className="ml-2" />
         </button>
-      </div>
-
-      {/* Microphone Icon */}
-      <div className="mt-5 p-5">
-        <FaTimes className="text-white text-2xl" />
       </div>
     </div>
   );

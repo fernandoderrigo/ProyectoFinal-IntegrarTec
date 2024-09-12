@@ -1,9 +1,4 @@
-import Link from 'next/link';
-import { FaSearch } from 'react-icons/fa';
-import { GoHomeFill } from 'react-icons/go';
 import { MdKeyboardVoice } from 'react-icons/md';
-import { ImBooks } from 'react-icons/im';
-import { PiMusicNotesPlusFill } from 'react-icons/pi';
 
 export default function NavMicrophoneOnly() {
   return (

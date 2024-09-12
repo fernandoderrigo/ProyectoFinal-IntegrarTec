@@ -11,26 +11,27 @@ import TransparentHeader from '../../../profile/header/TransparentHeader';
 
 export default function FullReproduction() {
   return (
-      <section className='col-span-4'>
+      <section className='col-span-4 grid grid-rows-2 content-center'>
         <article>
           <TransparentHeader />
         </article>
-        <article className="flex flex-row w-full">
-          <audio src=""></audio>
-          <Shuffle className="full-reproduction-button" />
+        <article className="grid grid-rows-2">
+          <audio src=""/>
+          <section className='flex justify-evenly'>
+            <Shuffle className="full-reproduction-button" />
 
-          <Share className="full-reproduction-button" />
+            <Share className="full-reproduction-button" />
 
-          <BackWard className="full-reproduction-button" />
+            <BackWard className="full-reproduction-button" />
 
-          <Play className="full-reproduction-button" />
+            <Play className="full-reproduction-button" />
 
-          <Forward className="full-reproduction-button" />
+            <Forward className="full-reproduction-button" />
 
-          <RepeatAll className="full-reproduction-button" />
-          <RepeatOne className="full-reproduction-button" />
+            <RepeatAll className="full-reproduction-button" />
 
-          <AddSong />
+            <AddSong className="full-reproduction-button"/>
+          </section>
         </article>
       </section>
   );
