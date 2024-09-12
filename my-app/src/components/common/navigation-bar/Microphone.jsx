@@ -1,62 +1,123 @@
-var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition
-var SpeechGrammarList = SpeechGrammarList || window.webkitSpeechGrammarList
-var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+'use client';
 
-var colors = [ 'aqua' , 'azure' , 'beige', 'bisque', 'black', 'blue', 'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo', 'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta', 'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid', 'peru', 'pink', 'plum', 'purple', 'red', 'salmon', 'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'white', 'yellow'];
+import React, { useEffect } from 'react';
 
-var recognition = new SpeechRecognition();
-if (SpeechGrammarList) {
-  // SpeechGrammarList is not currently available in Safari, and does not have any effect in any other browser.
-  // This code is provided as a demonstration of possible capability. You may choose not to use it.
-  var speechRecognitionList = new SpeechGrammarList();
-  var grammar = '#JSGF V1.0; grammar colors; public <color> = ' + colors.join(' | ') + ' ;'
-  speechRecognitionList.addFromString(grammar, 1);
-  recognition.grammars = speechRecognitionList;
-}
-recognition.continuous = false;
-recognition.lang = 'en-US';
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
+const colorDictionary = {
+    'aqua': 'aqua',
+    'azul': 'blue',
+    'beige': 'beige',
+    'bisque': 'bisque',
+    'negro': 'black',
+    'marrón': 'brown',
+    'chocolate': 'chocolate',
+    'coral': 'coral',
+    'carmesí': 'crimson',
+    'cian': 'cyan',
+    'fucsia': 'fuchsia',
+    'blanco fantasmal': 'ghostwhite',
+    'dorado': 'gold',
+    'dorado oscuro': 'goldenrod',
+    'gris': 'gray',
+    'verde': 'green',
+    'índigo': 'indigo',
+    'marfil': 'ivory',
+    'caqui': 'khaki',
+    'lavanda': 'lavender',
+    'lima': 'lime',
+    'lino': 'linen',
+    'magenta': 'magenta',
+    'granate': 'maroon',
+    'mocasín': 'moccasin',
+    'navy': 'navy',
+    'oliva': 'olive',
+    'naranja': 'orange',
+    'orquídea': 'orchid',
+    'peru': 'peru',
+    'rosa': 'pink',
+    'ciruela': 'plum',
+    'púrpura': 'purple',
+    'rojo': 'red',
+    'salmón': 'salmon',
+    'siena': 'sienna',
+    'plata': 'silver',
+    'nieve': 'snow',
+    'arena': 'tan',
+    'verde azulado': 'teal',
+    'cardo': 'thistle',
+    'tomate': 'tomato',
+    'turquesa': 'turquoise',
+    'violeta': 'violet',
+    'blanco': 'white',
+    'amarillo': 'yellow'
+  };
 
-var diagnostic = document.querySelector('.output');
-var bg = document.querySelector('html');
-var hints = document.querySelector('.hints');
+const navigationCommands = {
+    'login': '/login',
+    'registro': '/register',
+    'inicio': '/',
+    'perfil': '/profile',
+    'creaciones': '/my-creations',
+    'playlist': '/my-playlists',
+    'buscar': '/search',
+    'editar perfil': '/profile/edit',
+    'configuracion': '/profile/user-setting',
+    'historial': '/profile/history',
+  };
 
-var colorHTML= '';
-colors.forEach(function(v, i, a){
-  console.log(v, i);
-  colorHTML += '<span style="background-color:' + v + ';"> ' + v + ' </span>';
-});
-hints.innerHTML = 'Tap/click then say a color to change the background color of the app. Try ' + colorHTML + '.';
+const backgroundImages = {
+    'tranqui': 'url("/img/fondo1.webp")',
+    'anime': 'url("/img/fondo2.webp")',
+    'retro': 'url("/img/fondo3.jpg")',
+    'haru': 'url("/img/fondo4.jpg")',
+    'lluvia': 'url("/img/lluvia.gif")',
+    'mario': 'url("/img/mario.gif")',
+    'computadora': 'url("/img/pc.gif")',
+    'tigrito': 'url("/img/tigrito.gif")',
 
-document.body.onclick = function() {
-  recognition.start();
-  console.log('Ready to receive a color command.');
-}
 
-recognition.onresult = function(event) {
-  // The SpeechRecognitionEvent results property returns a SpeechRecognitionResultList object
-  // The SpeechRecognitionResultList object contains SpeechRecognitionResult objects.
-  // It has a getter so it can be accessed like an array
-  // The first [0] returns the SpeechRecognitionResult at the last position.
-  // Each SpeechRecognitionResult object contains SpeechRecognitionAlternative objects that contain individual results.
-  // These also have getters so they can be accessed like arrays.
-  // The second [0] returns the SpeechRecognitionAlternative at position 0.
-  // We then return the transcript property of the SpeechRecognitionAlternative object
-  var color = event.results[0][0].transcript;
-  diagnostic.textContent = 'Result received: ' + color + '.';
-  bg.style.backgroundColor = color;
-  console.log('Confidence: ' + event.results[0][0].confidence);
-}
+};
 
-recognition.onspeechend = function() {
-  recognition.stop();
-}
-
-recognition.onnomatch = function(event) {
-  diagnostic.textContent = "I didn't recognise that color.";
-}
-
-recognition.onerror = function(event) {
-  diagnostic.textContent = 'Error occurred in recognition: ' + event.error;
-}
+  const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
+    useEffect(() => {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.lang = 'es-ES';
+      recognition.continuous = false;
+      recognition.interimResults = false;
+  
+      recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        console.log('Comando detectado:', command);
+  
+        if (command in navigationCommands) {
+          const route = navigationCommands[command];
+          onNavigate(route);
+        } else if (command in backgroundImages) {
+          const background = backgroundImages[command];
+          onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
+        } else {
+          const colorInEnglish = colorDictionary[command];
+          if (colorInEnglish) {
+            if (typeof onColorChange === 'function') {
+              onColorChange(colorInEnglish);
+            } else {
+              console.error('onColorChange no está definido o no es una función');
+            }
+          } else {
+            console.log('Comando no reconocido:', command);
+          }
+        }
+      };
+  
+      recognition.onerror = (event) => {
+        console.error('Error en el reconocimiento de voz:', event.error);
+      };
+  
+      document.body.onclick = () => {
+        recognition.start();
+      };
+    }, [onNavigate, onColorChange, onBackgroundChange]);
+  
+    return null;
+  };
+  
+  export default Microphone;

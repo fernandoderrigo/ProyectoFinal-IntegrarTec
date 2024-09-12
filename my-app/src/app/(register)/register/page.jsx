@@ -1,9 +1,24 @@
-import React from 'react';
-import { FaPen, FaCheck, FaTimes, FaMicrophone } from 'react-icons/fa';
+'use client';
+
+import React, { useState } from 'react';
+import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import Microphone from '@/components/common/navigation-bar/Microphone'; 
 
 export default function Register() {
+  const [backgroundColor, setBackgroundColor] = useState('black'); // Estado para el color de fondo
+  const router = useRouter(); 
+
+  const handleColorChange = (color) => {
+    setBackgroundColor(color); // Actualiza el estado con el nuevo color
+  };
+
+  const handleNavigate = (route) => {
+    router.push(route); 
+  };
+
   return (
-    <div className="bg-black text-white h-screen p-5 flex flex-col justify-between items-center">
+    <div className="text-white h-screen p-5 flex flex-col justify-between items-center" style={{ backgroundColor }}>
       {/* Profile Picture and Close Icon */}
       <div className="w-full flex justify-center items-center relative">
         <div className="w-16 h-16 bg-gray-500 rounded-full mb-5"></div>
@@ -57,7 +72,10 @@ export default function Register() {
 
       {/* Microphone Icon */}
       <div className="mt-5 p-5">
-        <FaMicrophone className="text-white text-2xl" />
+        <Microphone
+          onNavigate={handleNavigate} 
+          onColorChange={handleColorChange}
+        />
       </div>
     </div>
   );
