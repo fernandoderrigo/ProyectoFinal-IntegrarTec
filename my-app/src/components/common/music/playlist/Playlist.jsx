@@ -14,7 +14,7 @@ const PLAYLISTS = [
 
 export default function Playlist() {
   return (
-    <>
+    <section className='col-span-4'>
       {PLAYLISTS.map(({ path, img, alt, name, advancement, id }) => {
         return (
           <article key={id} className="flex w-full flex-col gap-4 px-4 py-5">
@@ -36,6 +36,6 @@ export default function Playlist() {
           </article>
         );
       })}
-    </>
+    </section>
   );
 }

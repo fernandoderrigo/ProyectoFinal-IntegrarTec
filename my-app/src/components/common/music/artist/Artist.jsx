@@ -29,8 +29,7 @@ const ARTIST = [
 
 export default function Artist() {
   return (
-    <>
-      <article className="grid w-full grid-cols-4 gap-4 px-4 py-5">
+      <article className="grid grid-cols-4 gap-4 px-4 py-5 col-span-4">
         {ARTIST.map(({ path, img, alt, id }) => {
           return (
             <Link
@@ -45,6 +44,5 @@ export default function Artist() {
           );
         })}
       </article>
-    </>
   );
 }

@@ -11,8 +11,7 @@ import TransparentHeader from '../../../profile/header/TransparentHeader';
 
 export default function FullReproduction() {
   return (
-    <>
-      <section>
+      <section className='col-span-4'>
         <article>
           <TransparentHeader />
         </article>
@@ -34,6 +33,5 @@ export default function FullReproduction() {
           <AddSong />
         </article>
       </section>
-    </>
   );
 }
