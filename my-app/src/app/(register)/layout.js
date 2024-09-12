@@ -5,7 +5,7 @@ export default function LayoutOpen({ children }) {
   return (
     <>
       <HeaderProfile />
-      <main className="mt-16 mb-40">{children}</main>
+      <main className="mt-16 pb-40">{children}</main>
       <footer className="fixed bottom-0 w-full">
         <NavMicrophoneOnly />
       </footer>
