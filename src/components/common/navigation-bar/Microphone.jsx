@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const colorDictionary = {
     'aqua': 'aqua',
@@ -73,68 +73,73 @@ const backgroundImages = {
     'mario': 'url("/img/mario.gif")',
     'computadora': 'url("/img/pc.gif")',
     'tigrito': 'url("/img/tigrito.gif")',
-    'agua': 'url("/img/agua.webp")',
-    'playa': 'url("/img/playa_anime.gif")',
-    'otaku': 'url("/img/otaku.gif")',
-    'ojo': 'url("/img/ojo.gif")',
-    'lago': 'url("/img/lago.gif")',
-    'estrella': 'url("/img/estrella.gif")',
-    'brillo': 'url("/img/brillo.gif")',
-    'ao': 'url("/img/ao.gif")',
-    'prueba': 'url("/img/aguita.gif")',
-    'star': 'url("/img/star.gif")',
-    'burbuja': 'url("/img/burbuja.gif")',
-    'futuro': 'url("/img/futuro.gif")',
-    'totoro': 'url("/img/totoro.gif")',
-    'kirby': 'url("/img/kirby.gif")',
-    'chico': 'url("/img/chico.gif")',
-    'chica': 'url("/img/chica.gif")',
-    'gamer': 'url("/img/gamer.gif")',
-    'comida': 'url("/img/comida.gif")',
-    'halloween': 'url("/img/halloween.gif")',
+
+
 };
 
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
-    useEffect(() => {
-        const recognition = new window.webkitSpeechRecognition();
-        recognition.lang = 'es-ES';
-        recognition.continuous = false;
-        recognition.interimResults = false;
+  const [isListeningForCommand, setIsListeningForCommand] = useState(false);
 
-        recognition.onresult = (event) => {
-            const command = event.results[0][0].transcript.toLowerCase();
-            console.log('Comando detectado:', command);
+  useEffect(() => {
+      const recognition = new window.webkitSpeechRecognition();
+      recognition.lang = 'es-ES';
+      recognition.continuous = true; // Hacemos que el reconocimiento sea continuo
+      recognition.interimResults = false;
 
-            if (command in navigationCommands) {
-                const route = navigationCommands[command];
-                onNavigate(route);
-            } else if (command in backgroundImages) {
-                const background = backgroundImages[command];
-                onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
-            } else {
-                const colorInEnglish = colorDictionary[command];
-                if (colorInEnglish) {
-                    if (typeof onColorChange === 'function') {
-                        onColorChange(colorInEnglish);
-                    } else {
-                        console.error('onColorChange no está definido o no es una función');
-                    }
-                } else {
-                    console.log('Comando no reconocido:', command);
-                }
-            }
-        };
+      recognition.onresult = (event) => {
+          const command = event.results[0][0].transcript.toLowerCase();
+          console.log('Comando detectado:', command);
 
-        recognition.onerror = (event) => {
-            console.error('Error en el reconocimiento de voz:', event.error);
-        };
+          if (!isListeningForCommand) {
+              console.log('Esperando el comando "hola"...');
+              if (command === 'hola') {
+                  console.log('Palabra de activación "hola" detectada. Ahora escuchando comandos...');
+                  setIsListeningForCommand(true); // Activa el modo de comandos
+              }
+          } else {
+              console.log('Escuchando comandos...');
+              if (command in navigationCommands) {
+                  const route = navigationCommands[command];
+                  console.log(`Navegando a la ruta: ${route}`);
+                  onNavigate(route);
+              } else if (command in backgroundImages) {
+                  const background = backgroundImages[command];
+                  console.log(`Cambiando fondo a: ${command}`);
+                  onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
+              } else {
+                  const colorInEnglish = colorDictionary[command];
+                  if (colorInEnglish) {
+                      console.log(`Cambiando color a: ${colorInEnglish}`);
+                      if (typeof onColorChange === 'function') {
+                          onColorChange(colorInEnglish);
+                      } else {
+                          console.error('onColorChange no está definido o no es una función');
+                      }
+                  } else {
+                      console.log('Comando no reconocido:', command);
+                  }
+              }
 
-        document.body.onclick = () => {
-            recognition.start();
-        };
-    }, [onNavigate, onColorChange, onBackgroundChange]);
+              // Después de ejecutar el comando, vuelve a esperar "hola"
+              setIsListeningForCommand(false);
+              console.log('Esperando nuevamente el comando "hola"...');
+          }
+      };
 
-    return null;
+      recognition.onerror = (event) => {
+          console.error('Error en el reconocimiento de voz:', event.error);
+      };
+
+      recognition.start();
+      console.log('Iniciando reconocimiento de voz...');
+
+      return () => {
+          recognition.stop();
+          console.log('Reconocimiento de voz detenido.');
+      };
+  }, [isListeningForCommand, onNavigate, onColorChange, onBackgroundChange]);
+
+  return null;
 };
 
 export default Microphone;
