@@ -17,7 +17,6 @@ export default function Reproduction({ setNavBarVisibility }) {
     console.log("ocultar");
   };
 
-
   return (
     <section className="col-span-4">
       {isFullReproductionVisible ? (
