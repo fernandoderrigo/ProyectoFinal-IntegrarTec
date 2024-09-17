@@ -1,12 +1,31 @@
-import { FaSearch } from 'react-icons/fa';
+'use client';
 
-export default function Search() {
+import { useState } from "react";
+import ExpandSearchBar from "./ExpandSearchBar";
+import FullSearchBar from "./FullSearchBar";
+
+export default function SearchBar() {
+  const [isFullSearchVisible, setIsFullSearchVisible] = useState(false);
+
+  // Función para mostrar la barra de búsqueda completa
+  const showFullSearch = () => {
+    setIsFullSearchVisible(true);
+  };
+
+  // Función para ocultar la barra de búsqueda completa
+  const hideFullSearch = () => {
+    setIsFullSearchVisible(false);
+  };
+
   return (
-    <section className='col-span-4'>
-      <label htmlFor="" className='w-full grid grid-cols-5 bg-neutralViolet-900 p-2 rounded-xl justify-items-center items-baseline'>
-        <input className='text-lg text-black bg-neutralGreen-800 bg-opacity-10 p-1 rounded-xl col-span-4 '/>
-        <FaSearch size={24} color="gray" />
-      </label>
+    <section className="col-span-4">
+      {isFullSearchVisible ? (
+        <FullSearchBar hideFullSearch={hideFullSearch} />
+      ) : (
+        <div onClick={showFullSearch}>
+          <ExpandSearchBar />
+        </div>
+      )}
     </section>
   );
 }
