@@ -6,8 +6,8 @@ import Songs from '../../music/songs/Song';
 
 export default function FullSearchBar({ hideFullSearch }) {
   return (
-    <section className='absolute top-0 left-0 h-screen w-screen bg-black'>
-      <section className='fixed top-0 left-0 w-full'>
+    <section className='absolute top-0 z-10 right-0 h-screen w-screen bg-black'>
+      <section className='fixed top-0 z-20 right-0'>
         <label htmlFor="" className='w-full grid grid-cols-5 bg-neutralViolet-50 p-2 justify-items-center items-baseline'>
           <button onClick={hideFullSearch}>
             <FaArrowLeft className='basic-button text-black' />
@@ -18,6 +18,12 @@ export default function FullSearchBar({ hideFullSearch }) {
       </section>
       <section className='mt-12 pb-48'>
         <Songs />
+        <Songs />
+        <Songs />
+        <Songs />
+        <Songs />
+        <Songs />
+
       </section>
     </section>
   );

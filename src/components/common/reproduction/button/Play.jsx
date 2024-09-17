@@ -1,24 +1,23 @@
-'use client';
+import { useState } from 'react';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
-import { FaPlay } from "react-icons/fa";
-import { FaPause } from "react-icons/fa6";
-import { useState } from "react";
-
-export default function Play({classIcon}) {
+const Play = ({ audioRef, classIcon }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  
-  // Función para alternar entre play y pause
+
   const togglePlayPause = () => {
-    setIsPlaying((prevState) => !prevState);
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
   };
 
   return (
     <button onClick={togglePlayPause}>
-      {isPlaying ? (
-        <FaPause className={classIcon}/>
-      ) : (
-        <FaPlay className={classIcon}/>
-      )}
+      {isPlaying ? <FaPause className={classIcon} /> : <FaPlay className={classIcon} />}
     </button>
   );
-}
+};
+
+export default Play;

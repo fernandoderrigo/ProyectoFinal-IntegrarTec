@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google';
+import { AudioProvider } from '@/context/AudioContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -14,7 +15,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.className} h-svh bg-black text-neutralViolet-50`}
       >
-        {children}
+        <AudioProvider>{children}</AudioProvider>
       </body>
     </html>
   );

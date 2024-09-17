@@ -21,7 +21,6 @@ export default async function Page() {
       <Reproduction />
       <NavBar />
       </footer>
-      {/* <p>{posts}</p> */}
     </>
   );
 }

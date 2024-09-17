@@ -41,7 +41,7 @@ export default function Songs() {
     <section className='col-span-4'>
       {SONGS.map(({ path, img, alt, name, artist, id }) => {
         return (
-          <article key={id} className="gap-4 px-4 py-5">
+          <article key={id} className="px-4 py-5">
             <Link
               href={path}
               className="grid grid-cols-4 col-span-4 gap-4 overflow-hidden rounded-xl"
