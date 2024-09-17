@@ -12,6 +12,7 @@
     "@google-cloud/dialogflow": "^6.8.0",
     "@google-cloud/speech": "^6.7.0",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.7",
     "compromise": "^14.14.0",
     "next": "14.2.8",
     "react": "^18.3.1",
