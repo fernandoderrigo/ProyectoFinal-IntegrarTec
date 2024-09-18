@@ -61,13 +61,12 @@ const backgroundImages = {
   'playa': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/playa_anime.gif")',
   'estrella': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/star.gif")',
   'totoro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/totoro.gif")',
-
 };
 
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
     const [isListeningForCommand, setIsListeningForCommand] = useState(false);
-    const [isRestarting, setIsRestarting] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [timeoutId, setTimeoutId] = useState(null);
   
     useEffect(() => {
       const recognition = new window.webkitSpeechRecognition();
@@ -77,6 +76,11 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   
       const handleRecognitionResult = (event) => {
         if (isSpeaking) return; // Ignora comandos mientras se está hablando
+        
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          setTimeoutId(null);
+        }
   
         const command = event.results[0][0].transcript.toLowerCase();
         console.log(`Comando detectado: ${command}`);
@@ -95,12 +99,22 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
             console.log('Escuchando comandos...');
             if (!processCommand(command)) {
               handleCommandError();
+            } else {
+              // Después de ejecutar un comando válido, vuelve a esperar "escucha"
+              setIsListeningForCommand(false);
+              console.log('Esperando nuevamente la palabra clave "escucha"...');
             }
-            // Después de ejecutar el comando, vuelve a esperar "escucha"
-            setIsListeningForCommand(false);
-            console.log('Esperando nuevamente la palabra clave "escucha"...');
           }
         }
+  
+        // Reinicia el temporizador de inactividad
+        const id = setTimeout(() => {
+          console.log('Reiniciando reconocimiento de voz por inactividad...');
+          recognition.stop();
+          setTimeout(() => recognition.start(), 1000); // Ajusta el retraso según tus necesidades
+        }, 10000); // 10 segundos de inactividad
+  
+        setTimeoutId(id);
       };
   
       const handleRecognitionError = (event) => {
@@ -109,15 +123,9 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       };
   
       const restartRecognition = () => {
-        if (!isRestarting) {
-          setIsRestarting(true);
-          console.log('Reiniciando reconocimiento de voz...');
-          recognition.stop();
-          setTimeout(() => {
-            recognition.start();
-            setIsRestarting(false);
-          }, 3000); // Ajusta el retraso según tus necesidades
-        }
+        console.log('Reiniciando reconocimiento de voz...');
+        recognition.stop();
+        setTimeout(() => recognition.start(), 3000); // Ajusta el retraso según tus necesidades
       };
   
       const handleCommandError = () => {
@@ -125,8 +133,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
         utterance.onstart = () => setIsSpeaking(true);
         utterance.onend = () => {
           setIsSpeaking(false);
-          // Reinicia el reconocimiento después de hablar
-          restartRecognition();
+          // No es necesario reiniciar el reconocimiento aquí porque ya lo hacemos en el temporizador de inactividad
         };
         window.speechSynthesis.speak(utterance);
       };
@@ -168,8 +175,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
         utterance.onstart = () => setIsSpeaking(true);
         utterance.onend = () => {
           setIsSpeaking(false);
-          // Reinicia el reconocimiento después de hablar
-          restartRecognition();
+          // No reinicia el reconocimiento aquí porque ya lo hacemos después de un comando inválido
         };
         window.speechSynthesis.speak(utterance);
       };
@@ -183,10 +189,11 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       return () => {
         recognition.stop();
         console.log('Reconocimiento de voz detenido.');
+        if (timeoutId) clearTimeout(timeoutId);
       };
-    }, [isListeningForCommand, isRestarting, isSpeaking]);
+    }, [isListeningForCommand, isSpeaking, timeoutId]);
   
     return <MdKeyboardVoice className='text-5xl'/>;
   };
   
-  export default Microphone;
+export default Microphone;
