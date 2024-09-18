@@ -6,11 +6,22 @@ import { useRouter } from 'next/navigation';
 import Microphone from '@/components/common/navigation-bar/Microphone'; 
 
 export default function Register() {
-  const [backgroundColor, setBackgroundColor] = useState('black'); // Estado para el color de fondo
+  const [backgroundStyle, setBackgroundStyle] = useState({ backgroundColor: 'black', backgroundImage: 'none' });
   const router = useRouter(); 
 
   const handleColorChange = (color) => {
-    setBackgroundColor(color); // Actualiza el estado con el nuevo color
+    setBackgroundStyle(prevStyle => ({
+      ...prevStyle,
+      backgroundColor: color,
+      backgroundImage: 'none' // Asegúrate de que no haya imagen de fondo si solo se cambia el color
+    }));
+  };
+
+  const handleBackgroundChange = (background) => {
+    setBackgroundStyle(prevStyle => ({
+      ...prevStyle,
+      ...background // Permite la adición de imágenes de fondo
+    }));
   };
 
   const handleNavigate = (route) => {
@@ -18,7 +29,7 @@ export default function Register() {
   };
 
   return (
-    <article className="text-white h-screen p-5 flex flex-col justify-between items-center" style={{ backgroundColor }}>
+    <article className="text-white h-screen p-5 flex flex-col justify-between items-center" style={backgroundStyle}>
       {/* Profile Picture and Close Icon */}
 
       {/* Input Fields */}
@@ -69,6 +80,7 @@ export default function Register() {
         <Microphone
           onNavigate={handleNavigate} 
           onColorChange={handleColorChange}
+          onBackgroundChange={handleBackgroundChange} // Asegúrate de pasar esta función
         />
       </div>
     </article>
