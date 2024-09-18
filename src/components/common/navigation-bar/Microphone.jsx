@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import nlp from 'compromise';
+import { MdKeyboardVoice } from 'react-icons/md';
 
 const colorDictionary = {
   'azul': 'blue',

@@ -1,5 +1,3 @@
-'use client';
-
 import { FaSearch } from 'react-icons/fa';
 import { FaArrowLeft } from "react-icons/fa";
 import Songs from '../../music/songs/Song';
@@ -17,13 +15,6 @@ export default function FullSearchBar({ hideFullSearch }) {
         </label>
       </section>
       <section className='mt-12 pb-48 col-span-4'>
-        <Songs />
-        <Songs />
-        <Songs />
-        <Songs />
-        <Songs />
-        <Songs />
-
       </section>
     </section>
   );

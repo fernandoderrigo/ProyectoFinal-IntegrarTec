@@ -9,10 +9,13 @@ export default function SearchBar() {
 
   const showFullSearch = () => {
     setIsFullSearchVisible(true);
+    console.log('mostrar')
   };
 
   const hideFullSearch = () => {
     setIsFullSearchVisible(false);
+    console.log('ocultar')
+
   };
 
   return (
@@ -20,9 +23,9 @@ export default function SearchBar() {
       {isFullSearchVisible ? (
         <FullSearchBar hideFullSearch={hideFullSearch} />
       ) : (
-        <div onClick={showFullSearch}>
+        <button onClick={showFullSearch} className="w-full">
           <ExpandSearchBar />
-        </div>
+        </button>
       )}
     </section>
   );

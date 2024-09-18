@@ -1,40 +1,4 @@
-import Link from 'next/link';
 import Options from '../button/Options';
-
-const SONGS = [
-  {
-    path: '/',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de gatito',
-    name: 'gatito',
-    artist: 'gatito',
-    id: 'gatito',
-  },
-  {
-    path: '/',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de gatito',
-    name: 'gatito',
-    artist: 'gatito',
-    id: 'gatito 2',
-  },
-  {
-    path: '/',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de gatito',
-    name: 'gatito',
-    artist: 'gatito',
-    id: 'gatito 3',
-  },
-  {
-    path: '/',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de gatito',
-    name: 'gatito',
-    artist: 'gatito',
-    id: 'gatito 4',
-  },
-];
 
 export default async function Songs() {
   let res = await fetch('http://localhost:3001/api/songs');

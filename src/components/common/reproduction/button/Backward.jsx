@@ -2,8 +2,8 @@ import { FaStepBackward } from "react-icons/fa";
 
 export default function BackWard() { 
   return (
-    <buttom>
+    <button>
       <FaStepBackward />
-    </buttom>
+    </button>
   );
 }
