@@ -36,18 +36,17 @@ const SONGS = [
   },
 ];
 
-export default function Songs() {
+export default async function Songs() {
+  let res = await fetch('http://localhost:3001/api/songs');
+  const SONGS = await res.json();
+
   return (
     <section className='col-span-4'>
-      {SONGS.map(({ path, img, alt, name, artist, id }) => {
+      {SONGS.map(({  image_Url, alt, name, artist, id }) => {
         return (
-          <article key={id} className="px-4 py-5">
-            <Link
-              href={path}
-              className="grid grid-cols-4 col-span-4 gap-4 overflow-hidden rounded-xl"
-            >
+          <article key={id} className="px-4 py-5 grid grid-cols-4 col-span-4 gap-4 overflow-hidden rounded-xl">
               <picture className="col-start-1 overflow-hidden rounded-xl">
-                <img src={img} alt={alt} />
+                <img src={image_Url} alt={alt} />
               </picture>
               <section className="col-start-2 col-span-2">
                 <h2>{name}</h2>
@@ -56,7 +55,6 @@ export default function Songs() {
               <button className="w-1/5 content-center col-span-1 col-start-4 ">
                 <Options />
               </button>
-            </Link>
           </article>
         );
       })}

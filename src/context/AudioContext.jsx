@@ -1,24 +1,13 @@
-'use client';
-
-import React, { createContext, useRef, useState, useContext } from 'react';
+'use client'
+import { createContext, useRef, useContext } from 'react';
 
 const AudioContext = createContext();
 
 export const AudioProvider = ({ children }) => {
   const audioRef = useRef(new Audio('/AcousticGuitar1.mp3'));
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const togglePlayPause = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
 
   return (
-    <AudioContext.Provider value={{ audioRef, isPlaying, togglePlayPause }}>
+    <AudioContext.Provider value={{ audioRef }}>
       {children}
     </AudioContext.Provider>
   );

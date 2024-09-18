@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { MdKeyboardVoice } from 'react-icons/md';
+
 
 const colorDictionary = {
     'aqua': 'aqua',
@@ -117,7 +119,7 @@ const backgroundImages = {
       };
     }, [onNavigate, onColorChange, onBackgroundChange]);
   
-    return null;
+    return <MdKeyboardVoice className='text-5xl'/>;
   };
   
   export default Microphone;

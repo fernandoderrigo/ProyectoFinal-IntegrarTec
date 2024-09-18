@@ -7,12 +7,10 @@ import FullSearchBar from "./FullSearchBar";
 export default function SearchBar() {
   const [isFullSearchVisible, setIsFullSearchVisible] = useState(false);
 
-  // Función para mostrar la barra de búsqueda completa
   const showFullSearch = () => {
     setIsFullSearchVisible(true);
   };
 
-  // Función para ocultar la barra de búsqueda completa
   const hideFullSearch = () => {
     setIsFullSearchVisible(false);
   };
