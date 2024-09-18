@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { FaMusic, FaUserEdit } from 'react-icons/fa';
-import { MdSettings, MdDelete, MdKeyboardVoice } from 'react-icons/md';
+import { MdSettings, MdDelete } from 'react-icons/md';
+import { FaSignOutAlt } from "react-icons/fa";
+
 import Link from 'next/link';
 import Microphone from '@/components/common/navigation-bar/Microphone'; // Asegúrate de que el path es correcto
 
@@ -66,7 +68,7 @@ export default function Profile() {
           ELIMINAR CUENTA <MdDelete className="ml-2 text-xl" />
         </button>
         <button className="flex justify-between px-3 py-2 text-white bg-transparent border border-white rounded-lg cursor-pointer hover:bg-red-500 hover:text-white">
-          SALIR <MdDelete className="ml-2 text-xl" />
+          SALIR  <FaSignOutAlt className="ml-2 text-xl" />
         </button>
       </nav>
 

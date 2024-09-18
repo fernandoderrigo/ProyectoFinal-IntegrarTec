@@ -4,7 +4,7 @@ import SearchBar from '@/components/common/search-component/search-bar/SearchBar
 export default function search() {
   return (
     <>
-      <SearchBar />
+      <SearchBar/>
       <Gender />
     </>
   );

@@ -1,11 +1,29 @@
-import PartialReproduction from "./partial-reproduction/PartialReproduction"
-import FullReproduction from "./full-reproduction/FullReproduction"
+'use client';
 
-export default function Reproduction(){
-    return (
-      <>
-        <PartialReproduction />
-        <FullReproduction />
-      </>
-    );
+import PartialReproduction from "./partial-reproduction/PartialReproduction";
+import FullReproduction from "./full-reproduction/FullReproduction";
+import { useState } from "react";
+
+export default function Reproduction({ setNavBarVisibility }) {
+  const [isFullReproductionVisible, setIsFullReproductionVisible] = useState(false);
+
+  const showFullReproduction = () => {
+    setIsFullReproductionVisible(true);
+    console.log("mostrar");
+  };
+
+  const hideFullReproduction = () => {
+    setIsFullReproductionVisible(false);
+    console.log("ocultar");
+  };
+
+  return (
+    <section className="col-span-4">
+      {isFullReproductionVisible ? (
+        <FullReproduction hideFullReproduction={hideFullReproduction} />
+      ) : (
+        <PartialReproduction showFullReproduction={showFullReproduction}  />
+      )}
+    </section>
+  );
 }

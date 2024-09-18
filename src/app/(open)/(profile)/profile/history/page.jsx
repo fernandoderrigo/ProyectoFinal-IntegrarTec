@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Songs from '@/components/common/music/songs/Song';
-import Search from '@/components/common/search-component/search-bar/SearchBar';
+import Search from '@/components/common/search-component/search-bar/ExpandSearchBar';
 import Tags from '@/components/common/search-component/filter/Filter';
 import Microphone from '@/components/common/navigation-bar/Microphone'; // Asegúrate de que el path es correcto
 

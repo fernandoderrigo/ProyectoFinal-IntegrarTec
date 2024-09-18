@@ -15,7 +15,7 @@ export default function NavBar() {
           </Link>
         </li>
         <li className="flex items-center justify-center basic-button">
-          <Link href="/">
+          <Link href="/home">
             <GoHomeFill className="" />
           </Link>
         </li>
