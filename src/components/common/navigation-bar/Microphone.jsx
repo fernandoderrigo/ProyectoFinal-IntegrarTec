@@ -66,14 +66,31 @@ const navigationCommands = {
 };
 
 const backgroundImages = {
-  'tranqui': 'url("/img/fondo1.webp")',
-  'anime': 'url("/img/fondo2.webp")',
-  'retro': 'url("/img/fondo3.jpg")',
-  'haru': 'url("/img/fondo4.jpg")',
-  'lluvia': 'url("/img/lluvia.gif")',
-  'mario': 'url("/img/mario.gif")',
-  'computadora': 'url("/img/pc.gif")',
-  'tigrito': 'url("/img/tigrito.gif")',
+  'agua': 'url("")',
+
+  'brillo': 'url("")',
+  'AO': 'url("")',
+  'burbuja': 'url("")',
+  'chica': 'url("")',
+  'chico': 'url("")',
+  'comida': 'url("")',
+  'estrella': 'url("")',
+  'chill': 'url("")',
+  'anime': 'url("")',
+  'futuro': 'url("")',
+  'gamer': 'url("")',
+  'halloween': 'url("")',
+  'kirby': 'url("")',
+  'lago': 'url("")',
+  'lluvia': 'url("")',
+  'mario': 'url("")',
+  'ojo': 'url("")',
+  'otaku': 'url("")',
+  'computadora': 'url("")',
+  'playa': 'url("")',
+  'estrella': 'url("")',
+  'totoro': 'url("")',
+
 };
 
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
