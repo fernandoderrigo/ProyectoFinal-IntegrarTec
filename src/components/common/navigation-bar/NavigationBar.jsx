@@ -34,7 +34,7 @@ export default function NavBar() {
 
   return (
     <nav className="w-full">
-      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-4 mt-2 bg-black/20 to-transparent">
+      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-4 mt-2 bg-black/70">
         <li className="flex items-center justify-center basic-button">
           <Link href="/search">
             <FaSearch className="" />

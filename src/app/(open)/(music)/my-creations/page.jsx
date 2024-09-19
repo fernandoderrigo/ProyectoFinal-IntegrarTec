@@ -1,4 +1,4 @@
-import Artist from '@/components/common/music/artist/Artist';
+import Artist from '@/components/common/music/artists/Artists';
 import Playlist from '@/components/common/music/playlist/Playlist';
 import Songs from '@/components/common/music/songs/Songs';
 import SearchBar from '@/components/common/search-component/search-bar/SearchBar';

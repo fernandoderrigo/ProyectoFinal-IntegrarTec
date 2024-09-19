@@ -1,53 +1,39 @@
-import Link from 'next/link';
+'use client'
 
-const GENDER = [
-  {
-    path: '/',
-    gender: 'gatito',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de un gatito',
-    id: 'gatito 3',
-  },
-  {
-    path: '/',
-    gender: 'gatito',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de un gatito',
-    id: 'gatito 4',
-  },
-  {
-    path: '/',
-    gender: 'gatito',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de un gatito',
-    id: 'gatito 5',
-  },
-  {
-    path: '/',
-    gender: 'gatito',
-    img: '/img/gatito.jpeg',
-    alt: 'foto de un gatito',
-    id: 'gatito 6',
-  },
-];
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function Gender() {
+  const [genderList, setGenderList] = useState([]);
+
+  useEffect(() => {
+    async function fetchgendersData() {
+      try {
+        const response = await fetch('/api/gender');
+        const data = await response.json();
+        setGenderList(data);
+      } catch (error) {
+        console.error('Error fetching genders:', error);
+      }
+    }
+    fetchgendersData();
+  }, []);
   return (
-      <article className="grid w-full grid-cols-2 gap-4 px-4 py-5 col-span-4">
-        {GENDER.map(({ path, img, gender, alt, id }) => {
+      <article className="grid w-full grid-cols-4 gap-4 px-4 py-5 col-span-4">
+        {genderList.map(({gender,image}) => {
           return (
             <Link
-              className="grid aspect-video w-44 grid-cols-2 content-center rounded-xl bg-waterGreen-500 p-2.5"
+              className="grid aspect-video col-span-2 grid-cols-2 content-center rounded-xl gap-4 bg-waterGreen-500 p-2.5"
               href="{path}"
-              key={id}
+              key={gender}
             >
-              <div className="w-2/5 h-full pl-2 text-2xl">
+              <div className="w-2/5 h-full pl-2 text-lg">
                 <h2>{gender}</h2>
               </div>
-              <picture className="w-20 col-start-3 overflow-hidden rounded-xl">
+              <picture className="w-full col-start-2 overflow-hidden rounded-xl place-self-center">
                 <img
-                  src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
-                  alt={alt}
+                  src={image}
+                  alt={gender}
                   className=""
                 />
               </picture>
