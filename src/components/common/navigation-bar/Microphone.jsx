@@ -63,22 +63,6 @@ const backgroundImages = {
   'totoro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/totoro.gif")',
 };
 
-const commandDescriptions = {
-  'login': 'Navega a la página de inicio de sesión.',
-  'registro': 'Navega a la página de registro.',
-  'inicio': 'Regresa a la página principal.',
-  'perfil': 'Accede a tu perfil de usuario.',
-  'creaciones': 'Muestra tus creaciones.',
-  'playlist': 'Muestra tus listas de reproducción.',
-  'buscar': 'Accede a la función de búsqueda.',
-  'editar perfil': 'Edita la información de tu perfil.',
-  'configuracion': 'Accede a la configuración de usuario.',
-  'historial': 'Muestra tu historial de actividades.',
-  'lectura': 'Lee el contenido de la pantalla.',
-  'cambiar color': 'Cambia el color de la interfaz.',
-  'cambiar fondo': 'Cambia el fondo de la pantalla.',
-};
-
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   const [isListeningForCommand, setIsListeningForCommand] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -116,40 +100,36 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
           if (!processCommand(command)) {
             handleCommandError();
           } else {
-            // Después de ejecutar un comando válido, vuelve a esperar "escucha"
             setIsListeningForCommand(false);
             console.log('Esperando nuevamente la palabra clave "escucha"...');
           }
         }
       }
 
-      // Reinicia el temporizador de inactividad
       const id = setTimeout(() => {
         console.log('Reiniciando reconocimiento de voz por inactividad...');
         recognition.stop();
-        setTimeout(() => recognition.start(), 1000); // Ajusta el retraso según tus necesidades
-      }, 10000); // 10 segundos de inactividad
+        setTimeout(() => recognition.start(), 1000);
+      }, 10000);
 
       setTimeoutId(id);
     };
 
     const handleRecognitionError = (event) => {
       console.error('Error en el reconocimiento de voz:', event.error);
-      restartRecognition(); // Reinicia el reconocimiento en caso de error
+      restartRecognition();
     };
 
     const restartRecognition = () => {
       console.log('Reiniciando reconocimiento de voz...');
       recognition.stop();
-      setTimeout(() => recognition.start(), 3000); // Ajusta el retraso según tus necesidades
+      setTimeout(() => recognition.start(), 3000);
     };
 
     const handleCommandError = () => {
       const utterance = new SpeechSynthesisUtterance("Comando no reconocido, intente nuevamente.");
       utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
+      utterance.onend = () => setIsSpeaking(false);
       window.speechSynthesis.speak(utterance);
     };
 
@@ -158,51 +138,73 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       const isNavigationCommand = Object.keys(navigationCommands).find(cmd => doc.has(cmd));
       const isBackgroundCommand = Object.keys(backgroundImages).find(bg => doc.has(bg));
       const isColorCommand = Object.keys(colorDictionary).find(color => doc.has(color));
-      const isReadScreenCommand = doc.has('lectura'); // Nuevo comando
-      const isListCommands = doc.has('comandos'); // Nuevo comando
+
+      // Comando especial para "Marolio"
+      if (doc.has('marolio')) {
+        console.log('Cantando la canción de Marolio...');
+        speakMarolioSong();
+        return true;
+      }
+
+      // Comando especial para "lectura" (lee el contenido de la pantalla)
+      if (doc.has('lectura')) {
+        console.log('Leyendo el contenido de la pantalla...');
+        speakScreenContent();
+        return true;
+      }
 
       if (isNavigationCommand) {
         const route = navigationCommands[isNavigationCommand];
         console.log(`Navegando a la ruta: ${route}`);
         onNavigate(route);
         speak(`Usted está navegando a ${isNavigationCommand}`);
-        return true; // Comando reconocido y procesado
+        return true;
       } else if (isBackgroundCommand) {
         const background = backgroundImages[isBackgroundCommand];
         console.log(`Cambiando fondo a: ${isBackgroundCommand}`);
         onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
         speak(`Fondo cambiado a ${isBackgroundCommand}`);
-        return true; // Comando reconocido y procesado
+        return true;
       } else if (isColorCommand) {
         const colorInEnglish = colorDictionary[isColorCommand];
         console.log(`Cambiando color a: ${colorInEnglish}`);
         if (typeof onColorChange === 'function') {
           onColorChange(colorInEnglish);
           speak(`Color cambiado a ${isColorCommand}`);
-          return true; // Comando reconocido y procesado
+          return true;
         }
-      } else if (isReadScreenCommand) {
-        const screenText = document.body.innerText; // Lee el texto visible
-        console.log(`Leyendo la pantalla: ${screenText}`);
-        speak(`El contenido de la pantalla es: ${screenText}`);
-        return true; // Comando reconocido y procesado
-      } else if (isListCommands) {
-        const commandList = Object.keys(commandDescriptions).map(cmd => `${cmd}: ${commandDescriptions[cmd]}`).join('. ');
-        console.log(`Listado de comandos: ${commandList}`);
-        speak(`Los comandos disponibles son: ${commandList}`);
-        return true; // Comando reconocido y procesado
       }
 
-      // Si llegamos aquí, el comando no fue reconocido
       return false;
     };
 
     const speak = (message) => {
       const utterance = new SpeechSynthesisUtterance(message);
       utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
+      utterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    };
+
+    const speakMarolioSong = () => {
+      const marolioLyrics = `
+        Marolio le da sabor a tu vida
+        Marolio está desde el comienzo del día
+        Manteca, te, café, harina y palmitos
+        Yerba, mermeladas, cacao, picadillo
+        Pasta, arvejas, atún, sardinas y caballa
+        Arroz y yerba mate, harina y lentejas...
+      `;
+      const utterance = new SpeechSynthesisUtterance(marolioLyrics);
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    };
+
+    const speakScreenContent = () => {
+      const bodyText = document.body.innerText;
+      const utterance = new SpeechSynthesisUtterance(bodyText);
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
       window.speechSynthesis.speak(utterance);
     };
 
@@ -210,16 +212,15 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
     recognition.onerror = handleRecognitionError;
 
     recognition.start();
-    console.log('Iniciando reconocimiento de voz...');
 
-    return () => {
-      recognition.stop();
-      console.log('Reconocimiento de voz detenido.');
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [isListeningForCommand, isSpeaking, timeoutId]);
+    return () => recognition.stop();
+  }, [isListeningForCommand, isSpeaking, timeoutId, onNavigate, onColorChange, onBackgroundChange]);
 
-  return <MdKeyboardVoice className='text-5xl' />;
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <MdKeyboardVoice size={48} />
+    </div>
+  );
 };
 
 export default Microphone;
