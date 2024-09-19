@@ -5,7 +5,7 @@ import AddSong from '../button/Add';
 export default function PartialReproduction({showFullReproduction}) {
   const audioRef = useRef(null);
   return (
-    <section className='col-span-4 grid grid-cols-[3fr_1fr]'>
+    <section className='col-span-4 grid grid-cols-[3fr_1fr] bg-violet-900 p-1'>
       <button className='w-full pl-7 py-2' onClick={showFullReproduction}>
           <img src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb" alt=""  className="w-1/5 aspect-square overflow-hidden rounded-xl "/>
       </button>
