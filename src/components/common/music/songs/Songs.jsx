@@ -26,6 +26,12 @@ export default function SongList() {
 
   return (
     <div className='col-span-4'>
+      <input
+        type="text"
+        placeholder="Filtrar canciones..."
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)} // Actualiza el filtro
+      />
       <section>
         {filteredSongs.map(({ id, name, duration, gender, imageUrl, audioUrl, artists}) => (
           <article key={id} className="px-4 py-5 backdrop-blur-3xl bg-neutralViolet-900/10 grid grid-cols-4 gap-4 overflow-hidden rounded-xl my-4">
