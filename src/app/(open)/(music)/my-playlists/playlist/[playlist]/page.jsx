@@ -1,4 +1,4 @@
-import Songs from '@/components/common/music/songs/Song';
+import Songs from '@/components/common/music/songs/SongClient';
 import TransparentHeader from '@/components/profile/header/TransparentHeader';
 
 export default function search() {
