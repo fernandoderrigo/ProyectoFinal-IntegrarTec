@@ -1,6 +1,9 @@
+'use client'
+
 import { FaSearch } from 'react-icons/fa';
 import { FaArrowLeft } from "react-icons/fa";
-import Songs from '../../music/songs/Song';
+import SongList from '../../music/songs/Songs';
+import { useState } from 'react';
 
 export default function FullSearchBar({ hideFullSearch }) {
   return (
@@ -10,12 +13,15 @@ export default function FullSearchBar({ hideFullSearch }) {
           <button onClick={hideFullSearch}>
             <FaArrowLeft className='basic-button text-black' />
           </button>
-          <input className='text-lg text-black bg-neutralViolet-50 p-1 col-span-3 ' />
+          <input className='text-lg text-black bg-neutralViolet-50 p-1 col-span-3 '/>
           <FaSearch className='basic-button text-black' />
         </label>
       </section>
       <section className='mt-12 pb-48 col-span-4'>
+        <SongList/>
       </section>
     </section>
   );
 }
+
+
