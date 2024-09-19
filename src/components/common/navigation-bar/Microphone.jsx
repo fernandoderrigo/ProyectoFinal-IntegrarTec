@@ -27,7 +27,7 @@ const colorDictionary = {
 const navigationCommands = {
   'login': '/login',
   'registro': '/register',
-  'inicio': '/',
+  'inicio': '/home',
   'perfil': '/profile',
   'creaciones': '/my-creations',
   'playlist': '/my-playlists',
@@ -38,155 +38,188 @@ const navigationCommands = {
 };
 
 const backgroundImages = {
-  'agua': 'url("")',
-  'brillo': 'url("")',
-  'AO': 'url("")',
-  'burbuja': 'url("")',
-  'chica': 'url("")',
-  'chico': 'url("")',
-  'comida': 'url("")',
-  'estrella': 'url("")',
-  'chill': 'url("")',
-  'anime': 'url("")',
-  'futuro': 'url("")',
-  'gamer': 'url("")',
-  'halloween': 'url("")',
-  'kirby': 'url("")',
-  'lago': 'url("")',
-  'lluvia': 'url("")',
-  'mario': 'url("")',
-  'ojo': 'url("")',
-  'otaku': 'url("")',
-  'computadora': 'url("")',
-  'playa': 'url("")',
-  'estrella': 'url("")',
-  'totoro': 'url("")',
+  'agua': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/agua.webp")',
+  'brillo': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/aguita.gif")',
+  'AO': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/ao.gif")',
+  'burbuja': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/burbuja.gif")',
+  'chica': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/chica.gif")',
+  'chico': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/chico.gif")',
+  'comida': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/comida.gif")',
+  'estrella': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/estrella.gif")',
+  'chill': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/fondo1.webp")',
+  'anime': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/fondo2.webp")',
+  'futuro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/futuro.gif")',
+  'gamer': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/gamer.gif")',
+  'halloween': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/halloween.gif")',
+  'kirby': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/kirby.gif")',
+  'lago': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/lago.gif")',
+  'lluvia': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/lluvia.gif")',
+  'mario': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/mario.gif")',
+  'ojo': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/ojo.gif")',
+  'otaku': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/otaku.gif")',
+  'computadora': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/pc.gif")',
+  'playa': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/playa_anime.gif")',
+  'estrella': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/star.gif")',
+  'totoro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/totoro.gif")',
+};
 
+const commandDescriptions = {
+  'login': 'Navega a la página de inicio de sesión.',
+  'registro': 'Navega a la página de registro.',
+  'inicio': 'Regresa a la página principal.',
+  'perfil': 'Accede a tu perfil de usuario.',
+  'creaciones': 'Muestra tus creaciones.',
+  'playlist': 'Muestra tus listas de reproducción.',
+  'buscar': 'Accede a la función de búsqueda.',
+  'editar perfil': 'Edita la información de tu perfil.',
+  'configuracion': 'Accede a la configuración de usuario.',
+  'historial': 'Muestra tu historial de actividades.',
+  'lectura': 'Lee el contenido de la pantalla.',
+  'cambiar color': 'Cambia el color de la interfaz.',
+  'cambiar fondo': 'Cambia el fondo de la pantalla.',
 };
 
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
-    const [isListeningForCommand, setIsListeningForCommand] = useState(false);
-    const [isRestarting, setIsRestarting] = useState(false);
-    const [isSpeaking, setIsSpeaking] = useState(false);
-  
-    useEffect(() => {
-      const recognition = new window.webkitSpeechRecognition();
-      recognition.lang = 'es-ES';
-      recognition.continuous = true;
-      recognition.interimResults = false;
-  
-      const handleRecognitionResult = (event) => {
-        if (isSpeaking) return; // Ignora comandos mientras se está hablando
-  
-        const command = event.results[0][0].transcript.toLowerCase();
-        console.log(`Comando detectado: ${command}`);
-  
-        if (!isListeningForCommand) {
-          if (command === 'escucha') {
-            setIsListeningForCommand(true);
-            console.log('Palabra clave "escucha" detectada. Ahora escuchando comandos...');
-            speak("¿Qué acción desea realizar?");
-          }
+  const [isListeningForCommand, setIsListeningForCommand] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  useEffect(() => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.continuous = true;
+    recognition.interimResults = false;
+
+    const handleRecognitionResult = (event) => {
+      if (isSpeaking) return; // Ignora comandos mientras se está hablando
+
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        setTimeoutId(null);
+      }
+
+      const command = event.results[0][0].transcript.toLowerCase();
+      console.log(`Comando detectado: ${command}`);
+
+      if (!isListeningForCommand) {
+        if (command === 'escucha') {
+          setIsListeningForCommand(true);
+          console.log('Palabra clave "escucha" detectada. Ahora escuchando comandos...');
+          speak("¿Qué acción desea realizar?");
+        }
+      } else {
+        if (command === 'escucha') {
+          console.log('Palabra clave "escucha" detectada. Ya estamos escuchando comandos...');
+          speak("¿Qué acción desea realizar?");
         } else {
-          if (command === 'escucha') {
-            console.log('Palabra clave "escucha" detectada. Ya estamos escuchando comandos...');
-            speak("¿Qué acción desea realizar?");
+          console.log('Escuchando comandos...');
+          if (!processCommand(command)) {
+            handleCommandError();
           } else {
-            console.log('Escuchando comandos...');
-            if (!processCommand(command)) {
-              handleCommandError();
-            }
-            // Después de ejecutar el comando, vuelve a esperar "escucha"
+            // Después de ejecutar un comando válido, vuelve a esperar "escucha"
             setIsListeningForCommand(false);
             console.log('Esperando nuevamente la palabra clave "escucha"...');
           }
         }
-      };
-  
-      const handleRecognitionError = (event) => {
-        console.error('Error en el reconocimiento de voz:', event.error);
-        restartRecognition(); // Reinicia el reconocimiento en caso de error
-      };
-  
-      const restartRecognition = () => {
-        if (!isRestarting) {
-          setIsRestarting(true);
-          console.log('Reiniciando reconocimiento de voz...');
-          recognition.stop();
-          setTimeout(() => {
-            recognition.start();
-            setIsRestarting(false);
-          }, 3000); // Ajusta el retraso según tus necesidades
-        }
-      };
-  
-      const handleCommandError = () => {
-        const utterance = new SpeechSynthesisUtterance("Comando no reconocido, intente nuevamente.");
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => {
-          setIsSpeaking(false);
-          // Reinicia el reconocimiento después de hablar
-          restartRecognition();
-        };
-        window.speechSynthesis.speak(utterance);
-      };
-  
-      const processCommand = (command) => {
-        const doc = nlp(command);
-        const isNavigationCommand = Object.keys(navigationCommands).find(cmd => doc.has(cmd));
-        const isBackgroundCommand = Object.keys(backgroundImages).find(bg => doc.has(bg));
-        const isColorCommand = Object.keys(colorDictionary).find(color => doc.has(color));
-  
-        if (isNavigationCommand) {
-          const route = navigationCommands[isNavigationCommand];
-          console.log(`Navegando a la ruta: ${route}`);
-          onNavigate(route);
-          speak(`Usted está navegando a ${isNavigationCommand}`);
-          return true; // Comando reconocido y procesado
-        } else if (isBackgroundCommand) {
-          const background = backgroundImages[isBackgroundCommand];
-          console.log(`Cambiando fondo a: ${isBackgroundCommand}`);
-          onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
-          speak(`Fondo cambiado a ${isBackgroundCommand}`);
-          return true; // Comando reconocido y procesado
-        } else if (isColorCommand) {
-          const colorInEnglish = colorDictionary[isColorCommand];
-          console.log(`Cambiando color a: ${colorInEnglish}`);
-          if (typeof onColorChange === 'function') {
-            onColorChange(colorInEnglish);
-            speak(`Color cambiado a ${isColorCommand}`);
-            return true; // Comando reconocido y procesado
-          }
-        }
-  
-        // Si llegamos aquí, el comando no fue reconocido
-        return false;
-      };
-  
-      const speak = (message) => {
-        const utterance = new SpeechSynthesisUtterance(message);
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => {
-          setIsSpeaking(false);
-          // Reinicia el reconocimiento después de hablar
-          restartRecognition();
-        };
-        window.speechSynthesis.speak(utterance);
-      };
-  
-      recognition.onresult = handleRecognitionResult;
-      recognition.onerror = handleRecognitionError;
-  
-      recognition.start();
-      console.log('Iniciando reconocimiento de voz...');
-  
-      return () => {
+      }
+
+      // Reinicia el temporizador de inactividad
+      const id = setTimeout(() => {
+        console.log('Reiniciando reconocimiento de voz por inactividad...');
         recognition.stop();
-        console.log('Reconocimiento de voz detenido.');
+        setTimeout(() => recognition.start(), 1000); // Ajusta el retraso según tus necesidades
+      }, 10000); // 10 segundos de inactividad
+
+      setTimeoutId(id);
+    };
+
+    const handleRecognitionError = (event) => {
+      console.error('Error en el reconocimiento de voz:', event.error);
+      restartRecognition(); // Reinicia el reconocimiento en caso de error
+    };
+
+    const restartRecognition = () => {
+      console.log('Reiniciando reconocimiento de voz...');
+      recognition.stop();
+      setTimeout(() => recognition.start(), 3000); // Ajusta el retraso según tus necesidades
+    };
+
+    const handleCommandError = () => {
+      const utterance = new SpeechSynthesisUtterance("Comando no reconocido, intente nuevamente.");
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => {
+        setIsSpeaking(false);
       };
-    }, [isListeningForCommand, isRestarting, isSpeaking]);
-  
-    return <MdKeyboardVoice className='text-5xl'/>;
-  };
-  
-  export default Microphone;
+      window.speechSynthesis.speak(utterance);
+    };
+
+    const processCommand = (command) => {
+      const doc = nlp(command);
+      const isNavigationCommand = Object.keys(navigationCommands).find(cmd => doc.has(cmd));
+      const isBackgroundCommand = Object.keys(backgroundImages).find(bg => doc.has(bg));
+      const isColorCommand = Object.keys(colorDictionary).find(color => doc.has(color));
+      const isReadScreenCommand = doc.has('lectura'); // Nuevo comando
+      const isListCommands = doc.has('comandos'); // Nuevo comando
+
+      if (isNavigationCommand) {
+        const route = navigationCommands[isNavigationCommand];
+        console.log(`Navegando a la ruta: ${route}`);
+        onNavigate(route);
+        speak(`Usted está navegando a ${isNavigationCommand}`);
+        return true; // Comando reconocido y procesado
+      } else if (isBackgroundCommand) {
+        const background = backgroundImages[isBackgroundCommand];
+        console.log(`Cambiando fondo a: ${isBackgroundCommand}`);
+        onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
+        speak(`Fondo cambiado a ${isBackgroundCommand}`);
+        return true; // Comando reconocido y procesado
+      } else if (isColorCommand) {
+        const colorInEnglish = colorDictionary[isColorCommand];
+        console.log(`Cambiando color a: ${colorInEnglish}`);
+        if (typeof onColorChange === 'function') {
+          onColorChange(colorInEnglish);
+          speak(`Color cambiado a ${isColorCommand}`);
+          return true; // Comando reconocido y procesado
+        }
+      } else if (isReadScreenCommand) {
+        const screenText = document.body.innerText; // Lee el texto visible
+        console.log(`Leyendo la pantalla: ${screenText}`);
+        speak(`El contenido de la pantalla es: ${screenText}`);
+        return true; // Comando reconocido y procesado
+      } else if (isListCommands) {
+        const commandList = Object.keys(commandDescriptions).map(cmd => `${cmd}: ${commandDescriptions[cmd]}`).join('. ');
+        console.log(`Listado de comandos: ${commandList}`);
+        speak(`Los comandos disponibles son: ${commandList}`);
+        return true; // Comando reconocido y procesado
+      }
+
+      // Si llegamos aquí, el comando no fue reconocido
+      return false;
+    };
+
+    const speak = (message) => {
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+      window.speechSynthesis.speak(utterance);
+    };
+
+    recognition.onresult = handleRecognitionResult;
+    recognition.onerror = handleRecognitionError;
+
+    recognition.start();
+    console.log('Iniciando reconocimiento de voz...');
+
+    return () => {
+      recognition.stop();
+      console.log('Reconocimiento de voz detenido.');
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isListeningForCommand, isSpeaking, timeoutId]);
+
+  return <MdKeyboardVoice className='text-5xl' />;
+};
+
+export default Microphone;

@@ -37,8 +37,7 @@ export default function Tags() {
           {
             !showAll ? (<IoMdAdd size={24} color="gray" />) : (<FaMinus size={24} color="gray" />)
           }
-          
-          
+
         </button>
       )}
     </article>

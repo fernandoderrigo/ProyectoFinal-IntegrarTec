@@ -4,7 +4,7 @@ import PartialReproduction from "./partial-reproduction/PartialReproduction";
 import FullReproduction from "./full-reproduction/FullReproduction";
 import { useState } from "react";
 
-export default function Reproduction({ setNavBarVisibility }) {
+export default function Reproduction() {
   const [isFullReproductionVisible, setIsFullReproductionVisible] = useState(false);
 
   const showFullReproduction = () => {

@@ -28,14 +28,16 @@ export default function SongList({ filter = '' }) { // Recibimos el filtro como 
       <section>
         { filteredSongs.map(({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
           <article key={id} className="py-5 bg-neutralViolet-900/40 grid grid-cols-4 gap-4 rounded-xl my-4 px-4">
-            <picture className=" w-full aspect-square col-start-1 overflow-hidden rounded-xl">
-              <img src={imageUrl} alt={gender} />
-            </picture>
-            <section className="col-start-2 col-span-2">
-              <h2>{name}</h2>
-              <p className='text-sm'>{artists}</p>
-              <p className='text-sm'>{duration}</p>
-            </section>
+            <button className='col-start-1 col-span-3 grid grid-cols-3 gap-4'>
+              <picture className=" w-full aspect-square col-start-1 overflow-hidden rounded-xl">
+                <img src={imageUrl} alt={gender} />
+              </picture>
+              <section className="col-start-2 col-span-2 text-start">
+                <h2>{name}</h2>
+                <p className='text-sm'>{artists}</p>
+                <p className='text-sm'>{duration}</p>
+              </section>
+            </button>
             <button className="content-center col-start-4">
               <Options />
             </button>

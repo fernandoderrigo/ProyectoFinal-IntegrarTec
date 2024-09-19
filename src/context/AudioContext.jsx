@@ -1,16 +1,15 @@
 'use client'
-import { createContext, useRef, useContext } from 'react';
 
-const AudioContext = createContext();
+import { createContext, useState } from 'react';
 
-export const AudioProvider = ({ children }) => {
-  const audioRef = useRef(new Audio('/AcousticGuitar1.mp3'));
+export const SongContext = createContext();
+
+export function SongProvider({ children }) {
+  const [selectedSong, setSelectedSong] = useState(null);
 
   return (
-    <AudioContext.Provider value={{ audioRef }}>
+    <SongContext.Provider value={{ selectedSong, setSelectedSong }}>
       {children}
-    </AudioContext.Provider>
+    </SongContext.Provider>
   );
-};
-
-export const useAudio = () => useContext(AudioContext);
+}

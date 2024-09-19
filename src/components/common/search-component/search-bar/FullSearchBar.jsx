@@ -6,8 +6,7 @@ import SongList from '../../music/songs/Songs';
 import { useState } from 'react';
 
 export default function FullSearchBar({ hideFullSearch }) {
-  const [filterText, setFilterText] = useState(""); // Estado para el texto del input
-
+  const [filterText, setFilterText] = useState("");
   return (
     <section className='absolute top-0 z-10 right-0 h-screen w-screen bg-black grid grid-cols-4 gap-4 px-4'>
       <section className='fixed top-0 z-20 right-0 col-span-4'>
