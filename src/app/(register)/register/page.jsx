@@ -18,9 +18,9 @@ export default function Register() {
   const [previewImage, setPreviewImage] = useState('');
   const router = useRouter();
 
-    const handleNavigate = (route) => {
-      router.push(route);
-    };
+  const handleNavigate = (route) => {
+    router.push(route);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -75,6 +75,7 @@ export default function Register() {
     <>
       <article className="relative flex flex-col items-center justify-between h-screen col-span-4 p-5 text-white">
         <RegisterLogin />
+
         {/* Input Fields */}
         <section className="z-10 flex flex-col items-center w-full mt-5">
           {/* Nombre */}
@@ -189,6 +190,7 @@ export default function Register() {
             </div>
           )}
         </section>
+
         {/* Action Buttons */}
         <div className="flex justify-between w-full max-w-sm mt-4 px-2.5 z-10">
           <button
@@ -204,6 +206,13 @@ export default function Register() {
             Cancelar <FaTimes className="ml-1.25" />
           </button>
         </div>
+
+        <Microphone
+          onNavigate={handleNavigate}
+          onColorChange={null} // Puedes pasar una función o null si no la necesitas
+          onBackgroundChange={null} // Lo mismo para esta función
+        />
+
         {/* Fondo estrellado */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="relative w-full h-full bg-gradient-to-b from-blue-900 via-blue-800 to-black">
@@ -221,6 +230,7 @@ export default function Register() {
               ))}
           </div>
         </div>
+
         <style jsx>{`
           @keyframes twinkle {
             0%,

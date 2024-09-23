@@ -11,14 +11,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
+      const handleNavigate = (route) => {
+        router.push(route);
+      };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
-    const handleNavigate = (route) => {
-      router.push(route);
-    };
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
