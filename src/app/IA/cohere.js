@@ -1,5 +1,3 @@
-'use client';
-
 import { CohereClient } from 'cohere-ai';
 
 // Inicialización de Cohere
@@ -7,26 +5,17 @@ const cohere = new CohereClient({
   token: 'W331ncfqDOZmooKyMJNDqTmtwCFnq0idHV30tifS',
 });
 
-// Función para hablar la respuesta
-const speakResponse = (response, setIsSpeaking) => {
-  return new Promise((resolve) => {
-    const utterance = new SpeechSynthesisUtterance(response);
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      resolve();
-    };
-    window.speechSynthesis.speak(utterance);
-  });
-};
-
 // Manejo de comandos
-export const handleCommand = async (command, setIsSpeaking) => {
+export const handleCommand = async (command) => {
   const cleanedCommand = command.toLowerCase().trim();
   
   const preamble = `
-  Este chatbot de IA está diseñado para interpretar mensajes breves del usuario, que pueden variar entre 1 y 10 palabras o frases, como "en qué puedes ayudarme" o "qué puedes hacer por mí", y responder con un comando de voz según la intención del mensaje. Está diseñado para una aplicación de música 100% manejada por comandos de voz. Trata de hacer respuestas cortas y concisas, a menos que el usuario te pida lo contrario.
-  
+  Bienvenido a EscuchaFacil, una innovadora aplicación de música donde puedes realizar todas tus acciones mediante comandos de voz. Este chatbot de IA está diseñado para interpretar mensajes breves de los usuarios, que pueden variar entre 1 y 10 palabras o frases, como "¿qué puedes hacer por mí?" o "reproduce mi playlist favorita". 
+
+  Nuestras respuestas son concisas, con un máximo de 10 palabras, y si deseas que cante una canción, ¡también puedo hacerlo! 
+
+  Este proyecto es una colaboración de Fer, Nahu, Seba y Mati, desarrollado como parte de IntegrarTec. Disfruta de la experiencia musical sin límites con EscuchaFacil.
+
   Comandos de navegación disponibles:
   - login
   - registro
@@ -74,15 +63,14 @@ export const handleCommand = async (command, setIsSpeaking) => {
     });
 
     if (response && response.text) {
-      const aiResponse = response.text;
-      await speakResponse(aiResponse, setIsSpeaking); // Pasa setIsSpeaking aquí
-      return aiResponse;
+      return response.text;
     } else {
       throw new Error("La respuesta no contiene un texto válido.");
     }
   } catch (error) {
     const errorMessage = "Lo siento, no pude procesar tu solicitud. Intenta de nuevo más tarde.";
-    await speakResponse(errorMessage, setIsSpeaking); // Pasa setIsSpeaking aquí
     return errorMessage;
   }
 };
+
+export default cohere;

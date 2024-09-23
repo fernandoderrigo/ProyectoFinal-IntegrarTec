@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdKeyboardVoice } from 'react-icons/md';
 import { handleCommand as cohereHandleCommand } from '@/app/IA/cohere';
+
 const colorDictionary = {
   'azul': 'blue',
   'negro': 'black',
@@ -61,6 +62,7 @@ const backgroundImages = {
   'estrella': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/star.gif")',
   'totoro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/totoro.gif")',
 };
+
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   const [isListeningForCommand, setIsListeningForCommand] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -132,10 +134,12 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
         speak(`Color cambiado a ${isColorCommand}`);
         return true;
       } else {
+        // Procesar respuesta de Cohere solo si no se ha hablado anteriormente
         const cohereResponse = await cohereHandleCommand(command);
         if (cohereResponse && !hasSpoken) {
           speak(cohereResponse);
           setHasSpoken(true);
+          return true; // Indica que se procesó un comando
         } else if (!hasSpoken) {
           speak("Comando no reconocido. Intenta nuevamente.");
           setHasSpoken(true);
