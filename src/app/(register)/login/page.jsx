@@ -16,7 +16,9 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-
+    const handleNavigate = (route) => {
+      router.push(route);
+    };
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -27,12 +29,12 @@ export default function LoginPage() {
       });
       const data = await response.json();
       if (response.ok) {
-          localStorage.setItem('accessToken', data.accessToken);
-          localStorage.setItem('refreshToken', data.refreshToken);
-          router.push('/prueba');
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        router.push('/home');
       } else {
         setError(data.error || 'Error logging in');
-      } 
+      }
     } catch (error) {
       console.error('Error logging in:', error);
       setError('Server error');
@@ -87,7 +89,7 @@ export default function LoginPage() {
         </section>
       </form>
 
-      <Microphone />
+      <Microphone onNavigate={handleNavigate} />
 
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="relative w-full h-full bg-gradient-to-b from-blue-900 via-blue-800 to-black">

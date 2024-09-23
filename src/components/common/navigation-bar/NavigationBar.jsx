@@ -31,10 +31,10 @@ export default function NavBar() {
     document.body.style.backgroundImage = style.backgroundImage;
     document.body.style.backgroundColor = style.backgroundColor;
   };
-
+  
   return (
     <nav className="w-full">
-      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-4 mt-2 bg-black/70">
+      <ul className="grid w-full grid-cols-5 gap-4 px-4 pt-4 pb-1 mt-2 bg-black/70">
         <li className="flex items-center justify-center basic-button">
           <Link href="/search">
             <FaSearch className="" />
