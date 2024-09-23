@@ -1,10 +1,13 @@
 'use client';
 import { useState } from 'react';
 import Artist from '@/components/common/music/artists/Artists';
-import SelectPlaylist from '@/components/common/music/playlist/Playlist';
+import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
 import SongList from '@/components/common/music/songs/Songs';
 import SearchBar from '@/components/common/search-component/search-bar/SearchBar';
 import Tags from '@/components/common/search-component/filter/Filter';
+import { Suspense } from 'react';
+import LoadingPage from '@/components/loading/MyPlaylist';
+
 
 export default function Search() {
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -30,10 +33,12 @@ export default function Search() {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <Tags onGenreSelect={handleGenreSelect} />
-      <SongList filterFunction={filterFunction} />
-      <SelectPlaylist />
-      <Artist />
+      <Suspense fallback={<LoadingPage />}>
+        <Tags onGenreSelect={handleGenreSelect} />
+        <SongList filterFunction={filterFunction} />
+        <SelectPlaylist />
+        <Artist />
+      </Suspense>
     </>
   );
 }

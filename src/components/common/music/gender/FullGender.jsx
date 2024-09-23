@@ -1,31 +1,37 @@
 'use client';
 
-import { FaSearch, FaArrowLeft } from 'react-icons/fa';
-import SongList from '../../music/songs/Songs';
-import { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
+import SongList from '@/components/common/music/songs/Songs';
 import { Suspense } from 'react';
 
-export default function FullSearchBar({ hideFullSearch }) {
-  const [filterText, setFilterText] = useState('');
+const FullGender = ({ hideFullGender, selectedGenres }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        hideFullSearch();
+        hideFullGender();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
+    document.body.style.overflow = 'hidden';
+
     return () => {
       document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
     };
-  }, [hideFullSearch]);
+  }, [hideFullGender]);
 
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
-      hideFullSearch();
+      hideFullGender();
     }
+  };
+
+  const filterFunction = (song) => {
+    return selectedGenres.length === 0 || selectedGenres.includes(song.gender);
   };
 
   const SkeletonSong = () => (
@@ -51,39 +57,33 @@ export default function FullSearchBar({ hideFullSearch }) {
     >
       <div
         ref={modalRef}
-        className="w-full h-full max-w-4xl overflow-hidden bg-black shadow-lg"
+        className="w-full h-full max-w-4xl overflow-hidden bg-black rounded-lg shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <section className="flex flex-col h-full">
-          {/* Barra de búsqueda fija en la parte superior */}
-          <section className="flex items-center p-4 bg-neutralViolet-50">
-            <button onClick={hideFullSearch} className="mr-4">
-              <FaArrowLeft className="text-black basic-button" />
+          {/* Cabecera fija */}
+          <header className="sticky top-0 z-10 flex items-center justify-between p-4 bg-violet-900">
+            <div>
+              <h2 className="text-xl font-bold">{selectedGenres}</h2>
+            </div>
+            <button
+              onClick={hideFullGender}
+              className="transition-colors text-neutralViolet-50 hover:text-neutralViolet-200"
+              aria-label="Cerrar lista de reproducción"
+            >
+              <IoIosCloseCircleOutline className="text-4xl" />
             </button>
-            <input
-              className="flex-grow p-2 text-lg text-black rounded-md bg-neutralViolet-50"
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-              placeholder="Buscar canciones..."
-            />
+          </header>
 
-            <FaSearch className="text-black  basic-button" />
-          </section>
-
-          {/* Contenedor scrolleable para la lista de canciones */}
-          <section className="flex-grow pb-40 overflow-y-auto">
+          <div className="flex-grow pb-40 overflow-y-auto">
             <Suspense fallback={<SkeletonSong />}>
-              {filterText && (
-                <SongList
-                  filterFunction={(song) =>
-                    song.name.toLowerCase().includes(filterText.toLowerCase())
-                  }
-                />
-              )}
+              <SongList filterFunction={filterFunction} />
             </Suspense>
-          </section>
+          </div>
         </section>
       </div>
     </div>
   );
-}
+};
+
+export default FullGender;

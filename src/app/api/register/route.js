@@ -30,6 +30,8 @@ export async function POST(request) {
     }
 
     const data = await response.json();
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error('Error registering user:', error);

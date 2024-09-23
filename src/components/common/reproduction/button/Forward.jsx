@@ -1,8 +1,14 @@
-import { FaStepForward } from "react-icons/fa";
+import { FaStepForward } from 'react-icons/fa';
 
-export default function Forward() {
+export default function Forward({ audioRef, className }) {
+  const handleForward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime += 10; // Forward 10 seconds
+    }
+  };
+
   return (
-    <button>
+    <button onClick={handleForward} className={className}>
       <FaStepForward />
     </button>
   );

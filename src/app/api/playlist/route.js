@@ -57,6 +57,7 @@ export async function GET(request) {
         2
       )
     );
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     return NextResponse.json(playlistsData);
   } catch (error) {

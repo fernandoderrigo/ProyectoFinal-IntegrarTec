@@ -36,12 +36,6 @@ export default function Playlist({ showFullPlaylist }) {
     fetchPlaylists();
   }, []);
 
-  // Verificar si showFullPlaylist es una función
-  if (typeof showFullPlaylist !== 'function') {
-    console.error('showFullPlaylist no es una función');
-    return null; // O manejar este caso de alguna otra manera
-  }
-
   return (
     <section className="col-span-4 px-4">
       {playlists.map(({ id, name, nick_Name, image_Url, playlistSongs }) => (

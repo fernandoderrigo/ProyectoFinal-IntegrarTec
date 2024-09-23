@@ -24,6 +24,7 @@ export async function GET(request) {
     }
 
     const data = await response.json();
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     return NextResponse.json(data.data);
   } catch (error) {

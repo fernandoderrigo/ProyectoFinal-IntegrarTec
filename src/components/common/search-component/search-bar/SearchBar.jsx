@@ -1,32 +1,38 @@
 'use client';
 
-import { useState } from "react";
-import ExpandSearchBar from "./ExpandSearchBar";
-import FullSearchBar from "./FullSearchBar";
+import { useState, useEffect } from 'react';
+import ExpandSearchBar from './ExpandSearchBar';
+import FullSearchBar from './FullSearchBar';
 
 export default function SearchBar() {
   const [isFullSearchVisible, setIsFullSearchVisible] = useState(false);
 
+  useEffect(() => {
+    if (isFullSearchVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isFullSearchVisible]);
+
   const showFullSearch = () => {
     setIsFullSearchVisible(true);
-    console.log('mostrar')
   };
 
   const hideFullSearch = () => {
     setIsFullSearchVisible(false);
-    console.log('ocultar')
-
   };
 
   return (
     <section className="col-span-4">
-      {isFullSearchVisible ? (
-        <FullSearchBar hideFullSearch={hideFullSearch} />
-      ) : (
-        <button onClick={showFullSearch} className="w-full">
-          <ExpandSearchBar />
-        </button>
-      )}
+      <button onClick={showFullSearch} className="w-full">
+        <ExpandSearchBar />
+      </button>
+      {isFullSearchVisible && <FullSearchBar hideFullSearch={hideFullSearch} />}
     </section>
   );
 }

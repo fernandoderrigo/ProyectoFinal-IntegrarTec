@@ -46,6 +46,8 @@ export async function GET(request) {
           .join(', '),
       })
     );
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+
     return NextResponse.json(songsData);
   } catch (error) {
     console.error('Error fetching songs:', error);

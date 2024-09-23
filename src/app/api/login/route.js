@@ -34,6 +34,7 @@ export async function POST(request) {
         { status: 503 }
       );
     }
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again later.' },

@@ -37,6 +37,7 @@ export async function GET(request) {
       gender,
       image: genderToImage[gender],
     }));
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     return NextResponse.json(genderImagePairs);
   } catch (error) {
