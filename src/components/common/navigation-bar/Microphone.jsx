@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import nlp from 'compromise';
 import { MdKeyboardVoice } from 'react-icons/md';
+import { handleCommand as cohereHandleCommand } from '@/app/IA/cohere';
 
 const colorDictionary = {
   'azul': 'blue',
@@ -63,26 +63,11 @@ const backgroundImages = {
   'totoro': 'url("https://escuchafacil.s3.us-east-2.amazonaws.com/totoro.gif")',
 };
 
-const commandDescriptions = {
-  'login': 'Navega a la página de inicio de sesión.',
-  'registro': 'Navega a la página de registro.',
-  'inicio': 'Regresa a la página principal.',
-  'perfil': 'Accede a tu perfil de usuario.',
-  'creaciones': 'Muestra tus creaciones.',
-  'playlist': 'Muestra tus listas de reproducción.',
-  'buscar': 'Accede a la función de búsqueda.',
-  'editar perfil': 'Edita la información de tu perfil.',
-  'configuracion': 'Accede a la configuración de usuario.',
-  'historial': 'Muestra tu historial de actividades.',
-  'lectura': 'Lee el contenido de la pantalla.',
-  'cambiar color': 'Cambia el color de la interfaz.',
-  'cambiar fondo': 'Cambia el fondo de la pantalla.',
-};
-
 const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   const [isListeningForCommand, setIsListeningForCommand] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [hasSpoken, setHasSpoken] = useState(false);
 
   useEffect(() => {
     const recognition = new window.webkitSpeechRecognition();
@@ -90,8 +75,8 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
     recognition.continuous = true;
     recognition.interimResults = false;
 
-    const handleRecognitionResult = (event) => {
-      if (isSpeaking) return; // Ignora comandos mientras se está hablando
+    const handleRecognitionResult = async (event) => {
+      if (isSpeaking) return;
 
       if (timeoutId) {
         clearTimeout(timeoutId);
@@ -104,97 +89,72 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       if (!isListeningForCommand) {
         if (command === 'escucha') {
           setIsListeningForCommand(true);
-          console.log('Palabra clave "escucha" detectada. Ahora escuchando comandos...');
           speak("¿Qué acción desea realizar?");
+          setHasSpoken(false);
         }
       } else {
         if (command === 'escucha') {
-          console.log('Palabra clave "escucha" detectada. Ya estamos escuchando comandos...');
           speak("¿Qué acción desea realizar?");
         } else {
-          console.log('Escuchando comandos...');
-          if (!processCommand(command)) {
-            handleCommandError();
+          const commandProcessed = await processCommand(command);
+          if (!commandProcessed) {
+            handleCommandError(command);
           } else {
-            // Después de ejecutar un comando válido, vuelve a esperar "escucha"
             setIsListeningForCommand(false);
-            console.log('Esperando nuevamente la palabra clave "escucha"...');
           }
         }
       }
 
-      // Reinicia el temporizador de inactividad
       const id = setTimeout(() => {
-        console.log('Reiniciando reconocimiento de voz por inactividad...');
         recognition.stop();
-        setTimeout(() => recognition.start(), 1000); // Ajusta el retraso según tus necesidades
-      }, 10000); // 10 segundos de inactividad
+        setTimeout(() => recognition.start(), 1000);
+      }, 10000);
 
       setTimeoutId(id);
     };
 
-    const handleRecognitionError = (event) => {
-      console.error('Error en el reconocimiento de voz:', event.error);
-      restartRecognition(); // Reinicia el reconocimiento en caso de error
-    };
-
-    const restartRecognition = () => {
-      console.log('Reiniciando reconocimiento de voz...');
-      recognition.stop();
-      setTimeout(() => recognition.start(), 3000); // Ajusta el retraso según tus necesidades
-    };
-
-    const handleCommandError = () => {
-      const utterance = new SpeechSynthesisUtterance("Comando no reconocido, intente nuevamente.");
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
-      window.speechSynthesis.speak(utterance);
-    };
-
-    const processCommand = (command) => {
-      const doc = nlp(command);
-      const isNavigationCommand = Object.keys(navigationCommands).find(cmd => doc.has(cmd));
-      const isBackgroundCommand = Object.keys(backgroundImages).find(bg => doc.has(bg));
-      const isColorCommand = Object.keys(colorDictionary).find(color => doc.has(color));
-      const isReadScreenCommand = doc.has('lectura'); // Nuevo comando
-      const isListCommands = doc.has('comandos'); // Nuevo comando
+    const processCommand = async (command) => {
+      const isNavigationCommand = Object.keys(navigationCommands).find(cmd => command.includes(cmd));
+      const isBackgroundCommand = Object.keys(backgroundImages).find(bg => command.includes(bg));
+      const isColorCommand = Object.keys(colorDictionary).find(color => command.includes(color));
 
       if (isNavigationCommand) {
         const route = navigationCommands[isNavigationCommand];
-        console.log(`Navegando a la ruta: ${route}`);
         onNavigate(route);
         speak(`Usted está navegando a ${isNavigationCommand}`);
-        return true; // Comando reconocido y procesado
+        return true;
       } else if (isBackgroundCommand) {
         const background = backgroundImages[isBackgroundCommand];
-        console.log(`Cambiando fondo a: ${isBackgroundCommand}`);
         onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
         speak(`Fondo cambiado a ${isBackgroundCommand}`);
-        return true; // Comando reconocido y procesado
+        return true;
       } else if (isColorCommand) {
         const colorInEnglish = colorDictionary[isColorCommand];
-        console.log(`Cambiando color a: ${colorInEnglish}`);
-        if (typeof onColorChange === 'function') {
-          onColorChange(colorInEnglish);
-          speak(`Color cambiado a ${isColorCommand}`);
-          return true; // Comando reconocido y procesado
+        onColorChange(colorInEnglish);
+        speak(`Color cambiado a ${isColorCommand}`);
+        return true;
+      } else {
+        // Procesar respuesta de Cohere solo si no se ha hablado anteriormente
+        const cohereResponse = await cohereHandleCommand(command);
+        if (cohereResponse && !hasSpoken) {
+          speak(cohereResponse);
+          setHasSpoken(true);
+          return true; // Indica que se procesó un comando
+        } else if (!hasSpoken) {
+          speak("Comando no reconocido. Intenta nuevamente.");
+          setHasSpoken(true);
         }
-      } else if (isReadScreenCommand) {
-        const screenText = document.body.innerText; // Lee el texto visible
-        console.log(`Leyendo la pantalla: ${screenText}`);
-        speak(`El contenido de la pantalla es: ${screenText}`);
-        return true; // Comando reconocido y procesado
-      } else if (isListCommands) {
-        const commandList = Object.keys(commandDescriptions).map(cmd => `${cmd}: ${commandDescriptions[cmd]}`).join('. ');
-        console.log(`Listado de comandos: ${commandList}`);
-        speak(`Los comandos disponibles son: ${commandList}`);
-        return true; // Comando reconocido y procesado
       }
-
-      // Si llegamos aquí, el comando no fue reconocido
       return false;
+    };
+
+    const handleCommandError = async (command) => {
+      const suggestion = await cohereHandleCommand(command);
+      if (suggestion) {
+        speak(`Comando no reconocido, ¿quisiste decir ${suggestion}?`);
+      } else {
+        speak("Comando no reconocido, intenta nuevamente.");
+      }
     };
 
     const speak = (message) => {
@@ -202,19 +162,27 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => {
         setIsSpeaking(false);
+        // Reinicia el estado después de hablar
+        setHasSpoken(false);
       };
       window.speechSynthesis.speak(utterance);
     };
 
     recognition.onresult = handleRecognitionResult;
-    recognition.onerror = handleRecognitionError;
+    recognition.onerror = (event) => {
+      console.error('Error en el reconocimiento de voz:', event.error);
+      restartRecognition();
+    };
+
+    const restartRecognition = () => {
+      recognition.stop();
+      setTimeout(() => recognition.start(), 3000);
+    };
 
     recognition.start();
-    console.log('Iniciando reconocimiento de voz...');
 
     return () => {
       recognition.stop();
-      console.log('Reconocimiento de voz detenido.');
       if (timeoutId) clearTimeout(timeoutId);
     };
   }, [isListeningForCommand, isSpeaking, timeoutId]);
