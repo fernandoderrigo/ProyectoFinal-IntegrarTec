@@ -1,17 +1,43 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Options from '../button/Options';
-
-export default function SongList({ filter = '' }) { // Recibimos el filtro como prop
+import { SongContext } from '@/contexts/AudioContext';
+export default function SongList({ filterFunction }) {
   const [songList, setSongList] = useState([]);
+  const { setSelectedSong } = useContext(SongContext);
+
+  const handleClick = (song) => {
+    setSelectedSong(song);
+  };
 
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    
     async function fetchSongsData() {
       try {
-        const response = await fetch('/api/filter');
-        const data = await response.json();
-        setSongList(data);
+        console.log('intento con Token');
+        let response = await fetch('/api/filter', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        console.log('despues del fetch');
+        if (response.status === 401 && RefreshAccessToken){
+          console.log("intento con refresToken")
+          response = await fetch('/api/filter', {
+            headers: {
+              Authorization: `Bearer ${RefreshAccessToken}`,
+            },
+          });
+        }
+
+        if (response.ok) {
+          const data = await response.json();
+          setSongList(data);
+        } else {
+          console.error('Error al obtener las canciones');
+        }
       } catch (error) {
         console.error('Error fetching songs:', error);
       }
@@ -19,31 +45,49 @@ export default function SongList({ filter = '' }) { // Recibimos el filtro como 
     fetchSongsData();
   }, []);
 
-  const filteredSongs = songList.filter(song =>
-    song.name.toLowerCase().includes(filter.toLowerCase()) // Aplicamos el filtro recibido
-  );
+  const filteredSongs = filterFunction
+    ? songList.filter(filterFunction)
+    : songList;
 
   return (
-    <div className='col-span-4 px-4'>
-      <section>
-        { filteredSongs.map(({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
-          <article key={id} className="py-5 bg-neutralViolet-900/40 grid grid-cols-4 gap-4 rounded-xl my-4 px-4">
-            <button className='col-start-1 col-span-3 grid grid-cols-3 gap-4'>
-              <picture className=" w-full aspect-square col-start-1 overflow-hidden rounded-xl">
-                <img src={imageUrl} alt={gender} />
-              </picture>
-              <section className="col-start-2 col-span-2 text-start">
-                <h2>{name}</h2>
-                <p className='text-sm'>{artists}</p>
-                <p className='text-sm'>{duration}</p>
-              </section>
-            </button>
-            <button className="content-center col-start-4">
-              <Options />
-            </button>
-          </article>
-        ))}
-      </section>
-    </div>
+    <article className="col-span-4 px-4">
+
+        {filteredSongs.map(
+          ({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
+            <section
+              key={id}
+              className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
+            >
+              <button
+                className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
+                onClick={() =>
+                  handleClick({
+                    id,
+                    name,
+                    duration,
+                    gender,
+                    imageUrl,
+                    audioUrl,
+                    artists,
+                  })
+                }
+              >
+                <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl">
+                  <img src={imageUrl} alt={gender} />
+                </picture>
+                <section className="col-span-2 col-start-2 text-start">
+                  <h2>{name}</h2>
+                  <p className="text-sm">{artists}</p>
+                  <p className="text-sm">{duration}</p>
+                </section>
+              </button>
+              <button className="content-center col-start-4">
+                <Options />
+              </button>
+            </section>
+          )
+        )}
+
+    </article>
   );
 }

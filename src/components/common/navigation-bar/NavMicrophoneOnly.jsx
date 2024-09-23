@@ -17,7 +17,7 @@ export default function NavMicrophoneOnly() {
 
   return (
     <nav className="w-full">
-      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-7 bg-gradient-to-t from-indigo-500 to-transparent">
+      <ul className="grid w-full grid-cols-5 gap-4 px-4 pb-1 pt-7 bg-black/70">
         <li className="flex items-center justify-center col-start-3">
           <button onClick={handleClick}>
             <MdKeyboardVoice className={`text-5xl ${isListening ? 'text-green-500' : 'text-white'}`} />

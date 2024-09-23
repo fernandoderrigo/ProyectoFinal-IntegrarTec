@@ -1,11 +1,31 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  try {
-    const response = await fetch('http://localhost:3001/api/songs');
-    const SONGS = await response.json();
+export async function GET(request) {
+  console.log('inicio de todo');
+  const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  console.log(accessToken);
 
-    const songsData = SONGS.map(
+  if (!accessToken) {
+    return NextResponse.json({ error: 'No token provided' }, { status: 401 });
+  }
+
+  try {
+    const response = await fetch('http://localhost:3001/api/songs', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error || 'Error fetching songs' },
+        { status: response.status }
+      );
+    }
+    const songs = await response.json();
+
+    const songsData = songs.map(
       ({
         id,
         name,
@@ -13,7 +33,7 @@ export async function GET() {
         gender,
         image_Url,
         audio_Url,
-        artistsOnSongs,
+        artists_on_songs,
       }) => ({
         id,
         name,
@@ -21,11 +41,11 @@ export async function GET() {
         gender,
         imageUrl: image_Url,
         audioUrl: audio_Url,
-        // Convertimos los artistas en un array de nombres
-        artists: artistsOnSongs.map((artist) => artist.artists.name).join(', '),
+        artists: artists_on_songs
+          .map((artist) => artist.artists.name)
+          .join(', '),
       })
     );
-
     return NextResponse.json(songsData);
   } catch (error) {
     console.error('Error fetching songs:', error);

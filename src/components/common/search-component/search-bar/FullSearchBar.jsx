@@ -8,25 +8,32 @@ import { useState } from 'react';
 export default function FullSearchBar({ hideFullSearch }) {
   const [filterText, setFilterText] = useState("");
   return (
-    <section className='absolute top-0 z-10 right-0 h-screen w-screen bg-black grid grid-cols-4 gap-4 px-4'>
-      <section className='fixed top-0 z-20 right-0 col-span-4'>
-        <label htmlFor="" className='w-full grid grid-cols-5 bg-neutralViolet-50 p-2 justify-items-center items-baseline'>
+    <section className="absolute top-0 right-0 z-10 grid w-screen h-screen grid-cols-4 gap-4 px-4 bg-black">
+      <section className="fixed top-0 right-0 z-20 col-span-4">
+        <label
+          htmlFor=""
+          className="grid items-baseline w-full grid-cols-5 p-2 bg-neutralViolet-50 justify-items-center"
+        >
           <button onClick={hideFullSearch}>
-            <FaArrowLeft className='basic-button text-black place-self-center' />
+            <FaArrowLeft className="text-black basic-button place-self-center" />
           </button>
           <input
-            className='text-lg text-black bg-neutralViolet-50 p-1 col-span-3 place-self-center'
+            className="col-span-3 p-1 text-lg text-black bg-neutralViolet-50 place-self-center"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)} // Capturamos el texto del input
             placeholder="Buscar canciones..."
           />
-          <FaSearch className='basic-button text-black place-self-center' />
+          <FaSearch className="text-black basic-button place-self-center" />
         </label>
       </section>
-      <section className='mt-12 pb-48 col-span-4'>
-      {filterText && (
-        <SongList filter={filterText} />
-      )}
+      <section className="col-span-4 pb-48 mt-12">
+        {filterText && (
+          <SongList
+            filterFunction={(song) =>
+              song.name.toLowerCase().includes(filterText.toLowerCase())
+            }
+          />
+        )}
       </section>
     </section>
   );

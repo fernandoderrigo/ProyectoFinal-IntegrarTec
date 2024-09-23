@@ -6,10 +6,10 @@ export default function LayoutOpen({ children }) {
   return (
     <>
       <Header />
-      <main className="mt-16 pb-40 grid grid-cols-4 gap-4 px-4">
+      <main className="grid grid-cols-4 gap-4 px-4 pb-40 mt-16">
         {children}
       </main>
-      <footer className="fixed bottom-0 w-full z-50">
+      <footer className="fixed bottom-0 z-50 w-full">
         <Reproduction />
         <NavBar />
       </footer>
