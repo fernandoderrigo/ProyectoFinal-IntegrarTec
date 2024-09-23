@@ -48,7 +48,7 @@ export default function Register() {
     formData.append('email', email);
     formData.append('password', password);
     if (profileImage) {
-      formData.append('profileImage', profileImage);
+      formData.append('image_Url', profileImage);
     }
 
     try {
@@ -70,7 +70,6 @@ export default function Register() {
       alert('Error del servidor');
     }
   };
-
   return (
     <>
       <article className="relative flex flex-col items-center justify-between h-screen col-span-4 p-5 text-white">
