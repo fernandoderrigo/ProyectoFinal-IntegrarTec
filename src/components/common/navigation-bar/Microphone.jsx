@@ -68,6 +68,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
   const [hasSpoken, setHasSpoken] = useState(false);
+  const [errorCount, setErrorCount] = useState(0); // Contador de errores
 
   useEffect(() => {
     const recognition = new window.webkitSpeechRecognition();
@@ -84,7 +85,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       }
 
       const command = event.results[0][0].transcript.toLowerCase();
-      console.log(Comando detectado: ${command});
+      console.log(`Comando detectado: ${command}`);
 
       if (!isListeningForCommand) {
         if (command === 'escucha') {
@@ -121,17 +122,17 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       if (isNavigationCommand) {
         const route = navigationCommands[isNavigationCommand];
         onNavigate(route);
-        speak(Usted está navegando a ${isNavigationCommand});
+        speak(`Usted está navegando a ${isNavigationCommand}`);
         return true;
       } else if (isBackgroundCommand) {
         const background = backgroundImages[isBackgroundCommand];
         onBackgroundChange({ backgroundImage: background, backgroundColor: 'transparent' });
-        speak(Fondo cambiado a ${isBackgroundCommand});
+        speak(`Fondo cambiado a ${isBackgroundCommand}`);
         return true;
       } else if (isColorCommand) {
         const colorInEnglish = colorDictionary[isColorCommand];
         onColorChange(colorInEnglish);
-        speak(Color cambiado a ${isColorCommand});
+        speak(`Color cambiado a ${isColorCommand}`);
         return true;
       } else {
         // Procesar respuesta de Cohere solo si no se ha hablado anteriormente
@@ -151,8 +152,15 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
     const handleCommandError = async (command) => {
       const suggestion = await cohereHandleCommand(command);
       if (suggestion) {
-        speak(Comando no reconocido, ¿quisiste decir ${suggestion}?);
+        speak(`Comando no reconocido, ¿quisiste decir ${suggestion}?`);
       } else {
+        setErrorCount(prev => {
+          const newCount = prev + 1; // Incrementar el contador de errores
+          if (newCount >= 10) {
+            window.location.reload(); // Recargar la página después de 10 errores
+          }
+          return newCount;
+        });
         speak("Comando no reconocido, intenta nuevamente.");
       }
     };

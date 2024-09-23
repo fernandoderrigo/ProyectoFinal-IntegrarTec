@@ -8,7 +8,7 @@ const cohere = new CohereClient({
 // Manejo de comandos
 export const handleCommand = async (command) => {
   const cleanedCommand = command.toLowerCase().trim();
-
+  
   const preamble = `
   Bienvenido a EscuchaFacil, una innovadora aplicación de música donde puedes realizar todas tus acciones mediante comandos de voz. Este chatbot de IA está diseñado para interpretar mensajes breves de los usuarios, que pueden variar entre 1 y 10 palabras o frases, como "¿qué puedes hacer por mí?" o "reproduce mi playlist favorita". 
 
@@ -66,11 +66,10 @@ export const handleCommand = async (command) => {
     if (response && response.text) {
       return response.text;
     } else {
-      throw new Error('La respuesta no contiene un texto válido.');
+      throw new Error("La respuesta no contiene un texto válido.");
     }
   } catch (error) {
-    const errorMessage =
-      'Lo siento, no pude procesar tu solicitud. Intenta de nuevo más tarde.';
+    const errorMessage = "Lo siento, no pude procesar tu solicitud. Intenta de nuevo más tarde.";
     return errorMessage;
   }
 };
