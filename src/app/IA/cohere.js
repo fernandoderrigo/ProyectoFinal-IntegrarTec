@@ -54,6 +54,7 @@ export const handleCommand = async (command) => {
   - totoro
 
   Puedes usar estos comandos para navegar por la aplicación o cambiar el fondo de pantalla.
+  Tambien el usuario te puede pedir que hables como un personaje ficticio (batman, superman, goku, naruto,etc) o como una figura publica (Messi,Susana Gimenez, etc).
   `;
 
   try {
