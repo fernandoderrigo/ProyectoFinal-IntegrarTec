@@ -6,14 +6,60 @@ export default function SongList({ filterFunction }) {
   const [songList, setSongList] = useState([]);
   const { setSelectedSong } = useContext(SongContext);
 
-  const handleClick = (song) => {
+  const handleClick = async (song) => {
     setSelectedSong(song);
+    await createUserHistory(song.id);
+    console.log(song.id);
+  };
+
+  // Función para crear el historial del usuario
+  const createUserHistory = async (songId) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    
+    try {
+      let response = await fetch('/api/history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          id: songId,
+        }),
+      });
+
+      console.log('despues del fetch');
+      if (response.status === 401 && RefreshAccessToken) {
+        console.log('intento con refresToken');
+        response = await fetch('/api/history', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${RefreshAccessToken}`,
+          },
+          body: JSON.stringify({
+            id: songId,
+          }),
+        });
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Error al crear historial');
+      }
+
+      const userHistory = await response.json();
+      console.log('User history created:', userHistory);
+    } catch (error) {
+      console.error('Error creating user history:', error);
+    }
   };
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     const RefreshAccessToken = localStorage.getItem('refreshToken');
-    
+
     async function fetchSongsData() {
       try {
         console.log('intento con Token');
@@ -23,8 +69,8 @@ export default function SongList({ filterFunction }) {
           },
         });
         console.log('despues del fetch');
-        if (response.status === 401 && RefreshAccessToken){
-          console.log("intento con refresToken")
+        if (response.status === 401 && RefreshAccessToken) {
+          console.log('intento con refresToken');
           response = await fetch('/api/filter', {
             headers: {
               Authorization: `Bearer ${RefreshAccessToken}`,
@@ -51,43 +97,41 @@ export default function SongList({ filterFunction }) {
 
   return (
     <article className="col-span-4 px-4">
-
-        {filteredSongs.map(
-          ({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
-            <section
-              key={id}
-              className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
+      {filteredSongs.map(
+        ({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
+          <section
+            key={id}
+            className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
+          >
+            <button
+              className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
+              onClick={() =>
+                handleClick({
+                  id,
+                  name,
+                  duration,
+                  gender,
+                  imageUrl,
+                  audioUrl,
+                  artists,
+                })
+              }
             >
-              <button
-                className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
-                onClick={() =>
-                  handleClick({
-                    id,
-                    name,
-                    duration,
-                    gender,
-                    imageUrl,
-                    audioUrl,
-                    artists,
-                  })
-                }
-              >
-                <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl">
-                  <img src={imageUrl} alt={gender} />
-                </picture>
-                <section className="col-span-2 col-start-2 text-start">
-                  <h2>{name}</h2>
-                  <p className="text-sm">{artists}</p>
-                  <p className="text-sm">{duration}</p>
-                </section>
-              </button>
-              <button className="content-center col-start-4">
-                <Options />
-              </button>
-            </section>
-          )
-        )}
-
+              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl">
+                <img src={imageUrl} alt={gender} />
+              </picture>
+              <section className="col-span-2 col-start-2 text-start">
+                <h2>{name}</h2>
+                <p className="text-sm">{artists}</p>
+                <p className="text-sm">{duration}</p>
+              </section>
+            </button>
+            <button className="content-center col-start-4">
+              <Options />
+            </button>
+          </section>
+        )
+      )}
     </article>
   );
 }

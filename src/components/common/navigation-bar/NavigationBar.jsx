@@ -60,7 +60,7 @@ export default function NavBar() {
           </Link>
         </li>
         <li className="flex items-center justify-center basic-button">
-          <Link href="/my-creations">
+          <Link href="/history">
             <PiMusicNotesPlusFill className="" />
           </Link>
         </li>

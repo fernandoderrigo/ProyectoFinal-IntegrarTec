@@ -22,21 +22,6 @@ export async function GET(request) {
     }
     const playlists = await playlistResponse.json();
 
-    // Fetch all songs
-    const songsResponse = await fetch('http://localhost:3001/api/songs', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    if (!songsResponse.ok) {
-      const errorData = await songsResponse.json();
-      return NextResponse.json(
-        { error: errorData.error || 'Error fetching songs' },
-        { status: songsResponse.status }
-      );
-    }
-    const allSongs = await songsResponse.json();
-
     // Process playlist data
     const playlistsData = playlists.map(
       ({ id, name, id_user, users, song_in_playlist }) => {
