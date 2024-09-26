@@ -68,6 +68,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
   const [hasSpoken, setHasSpoken] = useState(false);
+  const [errorCount, setErrorCount] = useState(0); // Contador de errores
 
   useEffect(() => {
     const recognition = new window.webkitSpeechRecognition();
@@ -153,6 +154,13 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       if (suggestion) {
         speak(`Comando no reconocido, ¿quisiste decir ${suggestion}?`);
       } else {
+        setErrorCount(prev => {
+          const newCount = prev + 1; // Incrementar el contador de errores
+          if (newCount >= 10) {
+            window.location.reload(); // Recargar la página después de 10 errores
+          }
+          return newCount;
+        });
         speak("Comando no reconocido, intenta nuevamente.");
       }
     };
@@ -185,7 +193,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       recognition.stop();
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isListeningForCommand, isSpeaking, timeoutId]);
+  }, [isListeningForCommand, onBackgroundChange,onColorChange, onNavigate, hasSpoken, isSpeaking, timeoutId]);
 
   return <MdKeyboardVoice className='text-5xl' />;
 };
