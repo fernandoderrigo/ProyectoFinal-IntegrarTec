@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
-  console.log('inicio de todo');
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
-  console.log(accessToken);
 
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });

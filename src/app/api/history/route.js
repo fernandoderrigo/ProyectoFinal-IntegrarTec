@@ -10,7 +10,6 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
   const userId = tokenDecode.id;
-  console.log(accessToken);
   try {
     const historyResponse = await fetch(
       `http://localhost:3001/api/user-history/user/${userId}`,
@@ -28,19 +27,36 @@ export async function GET(request) {
       );
     }
     const historyData = await historyResponse.json();
+    const sortedHistoryData = historyData.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
 
-    const processedHistoryData = historyData.map(
-      ({ id_user, id_song, date }) => {
+    const filterUniqueIds = (array) => {
+      const seen = new Set();
+      return array.filter((item) => {
+        if (!seen.has(item.id_song)) {
+          seen.add(item.id_song);
+          return true;
+        }
+        return false;
+      });
+    };
+
+    const uniqueSongs = filterUniqueIds(sortedHistoryData);
+    const latestTenUniqueSongs = uniqueSongs.slice(0, 10);
+
+    const processedHistoryData = latestTenUniqueSongs.map(
+      ({ id_user, id_song, date, songs }) => {
         return {
           idUser: id_user,
           idSong: id_song,
           date,
+          songs,
         };
       }
     );
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    console.log(processedHistoryData);
 
+    await new Promise((resolve) => setTimeout(resolve, 4000));
     return NextResponse.json(processedHistoryData);
   } catch (error) {
     console.error('Error fetching history:', error);
@@ -72,7 +88,6 @@ export async function POST(request) {
   }
 
   try {
-    // Crear el historial del usuario en la base de datos
     const response = await fetch(`http://localhost:3001/api/user-history`, {
       method: 'POST',
       headers: {
@@ -87,14 +102,14 @@ export async function POST(request) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json(); // Cambiado para obtener los datos de error correctamente
+      const errorData = await response.json();
       return NextResponse.json(
         { error: errorData.error || 'Error creating history' },
         { status: response.status }
       );
     }
 
-    const data = await response.json(); // Asegúrate de obtener los datos de la respuesta
+    const data = await response.json();
     console.log('User history created:', data);
     return NextResponse.json(data, { status: 201 });
   } catch (error) {

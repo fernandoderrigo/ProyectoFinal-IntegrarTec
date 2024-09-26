@@ -7,9 +7,11 @@ import SearchBar from '@/components/common/search-component/search-bar/SearchBar
 import Tags from '@/components/common/search-component/filter/Filter';
 import { Suspense } from 'react';
 import LoadingPage from '@/components/loading/MyPlaylist';
-
+import { useRestartScroll } from '@/hooks/useRestartScroll';
+import PlaylistCreator from '@/components/common/music/playlist/PlaylistCreator';
 
 export default function Search() {
+  useRestartScroll();
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -33,6 +35,7 @@ export default function Search() {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
+        <PlaylistCreator />
       <Suspense fallback={<LoadingPage />}>
         <Tags onGenreSelect={handleGenreSelect} />
         <SongList filterFunction={filterFunction} />

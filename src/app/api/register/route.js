@@ -3,11 +3,9 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     const formData = await request.formData();
-
-    // Send the formData directly to the backend
     const response = await fetch('http://localhost:3001/api/users', {
       method: 'POST',
-      body: formData, // Send FormData directly
+      body: formData,
     });
 
     if (!response.ok) {

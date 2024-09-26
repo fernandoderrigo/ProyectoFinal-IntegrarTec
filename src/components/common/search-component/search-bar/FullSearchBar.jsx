@@ -2,6 +2,7 @@
 
 import { FaSearch, FaArrowLeft } from 'react-icons/fa';
 import SongList from '../../music/songs/Songs';
+import Playlist from '../../music/playlist/Playlist';
 import { useState, useRef, useEffect } from 'react';
 import { Suspense } from 'react';
 
@@ -55,7 +56,6 @@ export default function FullSearchBar({ hideFullSearch }) {
         onClick={(e) => e.stopPropagation()}
       >
         <section className="flex flex-col h-full">
-          {/* Barra de búsqueda fija en la parte superior */}
           <section className="flex items-center p-4 bg-neutralViolet-50">
             <button onClick={hideFullSearch} className="mr-4">
               <FaArrowLeft className="text-black basic-button" />
@@ -67,20 +67,26 @@ export default function FullSearchBar({ hideFullSearch }) {
               placeholder="Buscar canciones..."
             />
 
-            <FaSearch className="text-black  basic-button" />
+            <FaSearch className="text-black basic-button" />
           </section>
 
-          {/* Contenedor scrolleable para la lista de canciones */}
           <section className="flex-grow pb-40 overflow-y-auto">
-            <Suspense fallback={<SkeletonSong />}>
-              {filterText && (
+            {filterText && (
+              <>
                 <SongList
                   filterFunction={(song) =>
                     song.name.toLowerCase().includes(filterText.toLowerCase())
                   }
                 />
-              )}
-            </Suspense>
+                <Playlist
+                  filterFunction={(playlist) =>
+                    playlist.name
+                      .toLowerCase()
+                      .includes(filterText.toLowerCase())
+                  }
+                />
+              </>
+            )}
           </section>
         </section>
       </div>

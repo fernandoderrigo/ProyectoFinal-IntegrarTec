@@ -6,10 +6,12 @@ import SelectGender from '@/components/common/music/gender/SelectGender';
 import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
 import LoadingPage from '@/components/loading/MyPlaylist';
 import { Suspense } from 'react';
+import { useRestartScroll } from '@/hooks/useRestartScroll';
 
 export default function Page() {
+  useRestartScroll();
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
 
   const handleGenreSelect = (genres) => {
     setSelectedGenres(genres);

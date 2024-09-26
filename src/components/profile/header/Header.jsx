@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className="p-3 flex flex-row items-center justify-between basic-header bg-black">
+    <header className="z-50 flex flex-row items-center justify-between p-3 bg-black basic-header">
       <Link href="/profile">
         <FaUser className="basic-button" />
       </Link>

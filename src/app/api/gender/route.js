@@ -11,7 +11,6 @@ export async function GET(request) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response);
     if (!response.ok) {
       const errorData = await response.json();
       return NextResponse.json(
@@ -21,7 +20,6 @@ export async function GET(request) {
     }
 
     const gender = await response.json();
-    // console.log(gender);
 
     const genderToImage = {};
 

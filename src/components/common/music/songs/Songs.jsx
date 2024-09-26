@@ -1,22 +1,27 @@
 'use client';
 import { useState, useEffect, useContext } from 'react';
+import { motion } from 'framer-motion';
+
 import Options from '../button/Options';
 import { SongContext } from '@/contexts/AudioContext';
-export default function SongList({ filterFunction }) {
+import { SongListFallback } from '@/components/fallback/SongListFallback';
+
+export default function SongList({ filterFunction, order = [] }) {
   const [songList, setSongList] = useState([]);
+  const [loading, setLoading] = useState(true); 
+
   const { setSelectedSong } = useContext(SongContext);
 
   const handleClick = async (song) => {
     setSelectedSong(song);
     await createUserHistory(song.id);
-    console.log(song.id);
   };
 
   // Función para crear el historial del usuario
   const createUserHistory = async (songId) => {
     const accessToken = localStorage.getItem('accessToken');
     const RefreshAccessToken = localStorage.getItem('refreshToken');
-    
+
     try {
       let response = await fetch('/api/history', {
         method: 'POST',
@@ -28,8 +33,6 @@ export default function SongList({ filterFunction }) {
           id: songId,
         }),
       });
-
-      console.log('despues del fetch');
       if (response.status === 401 && RefreshAccessToken) {
         console.log('intento con refresToken');
         response = await fetch('/api/history', {
@@ -62,13 +65,11 @@ export default function SongList({ filterFunction }) {
 
     async function fetchSongsData() {
       try {
-        console.log('intento con Token');
         let response = await fetch('/api/filter', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        console.log('despues del fetch');
         if (response.status === 401 && RefreshAccessToken) {
           console.log('intento con refresToken');
           response = await fetch('/api/filter', {
@@ -86,22 +87,55 @@ export default function SongList({ filterFunction }) {
         }
       } catch (error) {
         console.error('Error fetching songs:', error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchSongsData();
   }, []);
+      if (loading) {
+        return <SongListFallback />;
+      }
 
   const filteredSongs = filterFunction
-    ? songList.filter(filterFunction)
+    ? songList.filter(filterFunction).sort(
+        (a, b) =>
+          order.length > 0 ? order.indexOf(a.id) - order.indexOf(b.id) : 0 // No ordenar si no hay un array de orden
+      )
     : songList;
 
+    const container = {
+      hidden: { opacity: 1, scale: 0 },
+      visible: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+          delayChildren: 0.3,
+          staggerChildren: 0.2,
+        },
+      },
+    };
+
+    const item = {
+      hidden: { y: 20, opacity: 0 },
+      visible: {
+        y: 0,
+        opacity: 1,
+      },
+    };
   return (
-    <article className="col-span-4 px-4">
+    <motion.article
+      className="col-span-4 px-4"
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
       {filteredSongs.map(
         ({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
-          <section
+          <motion.section
             key={id}
             className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
+            variants={item}
           >
             <button
               className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
@@ -129,9 +163,9 @@ export default function SongList({ filterFunction }) {
             <button className="content-center col-start-4">
               <Options />
             </button>
-          </section>
+          </motion.section>
         )
       )}
-    </article>
+    </motion.article>
   );
 }

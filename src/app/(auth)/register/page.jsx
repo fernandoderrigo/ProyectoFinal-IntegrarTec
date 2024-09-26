@@ -75,9 +75,7 @@ export default function Register() {
       <article className="relative flex flex-col items-center justify-between h-screen col-span-4 p-5 text-white">
         <RegisterLogin />
 
-        {/* Input Fields */}
         <section className="z-10 flex flex-col items-center w-full mt-5">
-          {/* Nombre */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="text"
@@ -88,8 +86,6 @@ export default function Register() {
             />
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
-
-          {/* Apellido */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="text"
@@ -101,7 +97,6 @@ export default function Register() {
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
 
-          {/* Nickname */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="text"
@@ -113,7 +108,6 @@ export default function Register() {
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
 
-          {/* Fecha de Nacimiento */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="date"
@@ -125,7 +119,6 @@ export default function Register() {
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
 
-          {/* Email */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="email"
@@ -137,7 +130,6 @@ export default function Register() {
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
 
-          {/* Contraseña */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="password"
@@ -149,7 +141,6 @@ export default function Register() {
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
 
-          {/* Confirmar Contraseña */}
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="password"
@@ -160,7 +151,7 @@ export default function Register() {
             />
             <FaPen className="absolute text-gray-400 right-2" />
           </label>
-          {/* Nuevo campo para subir imagen */}
+
           <label className="flex items-center mb-2 w-full max-w-md bg-gray-800 rounded-lg p-2.5 relative">
             <input
               type="file"
@@ -178,7 +169,6 @@ export default function Register() {
             </div>
           </label>
 
-          {/* Previsualización de la imagen */}
           {previewImage && (
             <div className="w-full max-w-md mb-2">
               <img
@@ -190,7 +180,6 @@ export default function Register() {
           )}
         </section>
 
-        {/* Action Buttons */}
         <div className="flex justify-between w-full max-w-sm mt-4 px-2.5 z-10">
           <button
             className="flex-1 mr-2 p-2.5 bg-green-500 text-white rounded flex justify-center items-center cursor-pointer"
@@ -208,8 +197,8 @@ export default function Register() {
 
         <Microphone
           onNavigate={handleNavigate}
-          onColorChange={null} // Puedes pasar una función o null si no la necesitas
-          onBackgroundChange={null} // Lo mismo para esta función
+          onColorChange={null}
+          onBackgroundChange={null}
         />
 
         {/* Fondo estrellado */}

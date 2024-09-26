@@ -17,7 +17,6 @@ export default function Artist() {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        console.log('despues del fetch');
         if (response.status === 401 && RefreshAccessToken) {
           console.log('intento con refresToken');
           response = await fetch('/api/artists', {
@@ -28,7 +27,6 @@ export default function Artist() {
         }
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
           setArtistsList(data);
         } else {
           console.error('Error al obtener las canciones');

@@ -64,7 +64,6 @@ export default function FullPlaylist({ hideFullPlaylist, playlist }) {
         onClick={(e) => e.stopPropagation()}
       >
         <section className="flex flex-col h-full">
-          {/* Cabecera fija */}
           <header className="sticky top-0 z-10 flex items-center justify-between p-4 bg-violet-900">
             <div>
               <h2 className="text-xl font-bold">{playlist.name}</h2>
@@ -80,8 +79,6 @@ export default function FullPlaylist({ hideFullPlaylist, playlist }) {
               <IoIosCloseCircleOutline className="text-4xl" />
             </button>
           </header>
-
-          {/* Contenido desplazable */}
           <div className="flex-grow pb-40 overflow-y-auto">
             <Suspense fallback={<SkeletonSong />}>
               <SongList filterFunction={filterFunction} />

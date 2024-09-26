@@ -15,6 +15,7 @@
     "axios": "^1.7.7",
     "cohere-ai": "^7.13.2",
     "compromise": "^14.14.0",
+    "framer-motion": "^11.8.0",
     "jwt-decode": "^4.0.0",
     "next": "14.2.8",
     "react": "^18.3.1",
