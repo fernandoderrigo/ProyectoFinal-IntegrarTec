@@ -193,7 +193,7 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       recognition.stop();
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isListeningForCommand, onBackgroundChange,onColorChange, onNavigate, hasSpoken, isSpeaking, timeoutId]);
+  }, [isListeningForCommand, isSpeaking, timeoutId]);
 
   return <MdKeyboardVoice className='text-5xl' />;
 };
