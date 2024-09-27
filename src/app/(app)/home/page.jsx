@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import SongList from '@/components/common/music/songs/Songs';
 import SelectGender from '@/components/common/music/gender/SelectGender';
 import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
-import LoadingPage from '@/components/loading/MyPlaylist';
-import { Suspense } from 'react';
 import { useRestartScroll } from '@/hooks/useRestartScroll';
 
 export default function Page() {
@@ -28,10 +26,10 @@ export default function Page() {
   };
 
   return (
-    <Suspense fallback={<LoadingPage />}>
-      <SelectGender onGenreSelect={handleGenreSelect} />
-      <SongList filterFunction={filterFunction} />
-      <SelectPlaylist filterFunction={filterFunction} />
-    </Suspense>
+      <article className="col-span-4">
+        <SelectGender onGenreSelect={handleGenreSelect} />
+        <SongList filterFunction={filterFunction} />
+        <SelectPlaylist filterFunction={filterFunction} />
+      </article>
   );
 }

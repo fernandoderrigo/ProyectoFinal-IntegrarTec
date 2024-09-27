@@ -5,8 +5,6 @@ import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
 import SongList from '@/components/common/music/songs/Songs';
 import SearchBar from '@/components/common/search-component/search-bar/SearchBar';
 import Tags from '@/components/common/search-component/filter/Filter';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/loading/MyPlaylist';
 import { useRestartScroll } from '@/hooks/useRestartScroll';
 import PlaylistCreator from '@/components/common/music/playlist/PlaylistCreator';
 
@@ -35,13 +33,12 @@ export default function Search() {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-        <PlaylistCreator />
-      <Suspense fallback={<LoadingPage />}>
+      <PlaylistCreator />
+      <article className="col-span-4">
         <Tags onGenreSelect={handleGenreSelect} />
         <SongList filterFunction={filterFunction} />
         <SelectPlaylist />
-        <Artist />
-      </Suspense>
+      </article>
     </>
   );
 }

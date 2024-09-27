@@ -8,11 +8,21 @@ import { PiMusicNotesPlusFill } from 'react-icons/pi';
 import { useRouter } from 'next/navigation';  // Cambiado a next/navigation
 import { useState } from 'react';
 import Microphone from './Microphone';
+import useMicrophone from '@/hooks/useMicrophone';
 
 export default function NavBar() {
   const router = useRouter();
   const [backgroundStyle, setBackgroundStyle] = useState({});
+  const { isListening, startListening, stopListening } = useMicrophone();
   const [color, setColor] = useState('white');
+
+    const handleClick = () => {
+      if (isListening) {
+        stopListening();
+      } else {
+        startListening();
+      }
+    };
 
   // Función para la navegación basada en comandos
   const handleNavigate = (route) => {
@@ -46,13 +56,12 @@ export default function NavBar() {
           </Link>
         </li>
         <li className="flex items-center justify-center">
-          <button>
-            <Microphone 
-              onNavigate={handleNavigate} 
-              onColorChange={handleColorChange} 
-              onBackgroundChange={handleBackgroundChange}
-            />
-          </button>
+          <Microphone
+            className={`${isListening ? 'text-green-500' : 'text-white'}`}
+            onNavigate={handleNavigate}
+            onColorChange={handleColorChange}
+            onBackgroundChange={handleBackgroundChange}
+          />
         </li>
         <li className="flex items-center justify-center basic-button">
           <Link href="/my-playlists">

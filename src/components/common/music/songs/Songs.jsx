@@ -8,7 +8,7 @@ import { SongListFallback } from '@/components/fallback/SongListFallback';
 
 export default function SongList({ filterFunction, order = [] }) {
   const [songList, setSongList] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   const { setSelectedSong } = useContext(SongContext);
 
@@ -93,36 +93,37 @@ export default function SongList({ filterFunction, order = [] }) {
     }
     fetchSongsData();
   }, []);
-      if (loading) {
-        return <SongListFallback />;
-      }
 
-  const filteredSongs = filterFunction
-    ? songList.filter(filterFunction).sort(
-        (a, b) =>
-          order.length > 0 ? order.indexOf(a.id) - order.indexOf(b.id) : 0 // No ordenar si no hay un array de orden
-      )
-    : songList;
+  if (loading) {
+    return <SongListFallback />;
+  }
 
-    const container = {
-      hidden: { opacity: 1, scale: 0 },
-      visible: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-          delayChildren: 0.3,
-          staggerChildren: 0.2,
-        },
+  const filteredSongs = songList
+    .filter(filterFunction)
+    .sort((a, b) =>
+      order.length > 0 ? order.indexOf(a.id) - order.indexOf(b.id) : 0
+    );
+
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
       },
-    };
+    },
+  };
 
-    const item = {
-      hidden: { y: 20, opacity: 0 },
-      visible: {
-        y: 0,
-        opacity: 1,
-      },
-    };
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <motion.article
       className="col-span-4 px-4"
@@ -151,7 +152,7 @@ export default function SongList({ filterFunction, order = [] }) {
                 })
               }
             >
-              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl">
+              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl place-self-center">
                 <img src={imageUrl} alt={gender} />
               </picture>
               <section className="col-span-2 col-start-2 text-start">

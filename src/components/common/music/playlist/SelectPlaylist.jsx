@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import Playlist from './Playlist';
 import FullPlaylist from './FullPlaylist';
-import { Suspense } from 'react';
 
-export default function SelectPlaylist() {
+export default function SelectPlaylist({ filterFunction, selectedGenres }) {
   const [isFullPlaylistVisible, setIsFullPlaylistVisible] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
@@ -37,9 +36,11 @@ export default function SelectPlaylist() {
 
   return (
     <section className="col-span-4">
-      <Suspense fallback={<SkeletonPlaylist />}>
-        <Playlist showFullPlaylist={showFullPlaylist} />
-      </Suspense>
+      <Playlist
+        showFullPlaylist={showFullPlaylist}
+        filterFunction={filterFunction}
+        selectedGenres={selectedGenres}
+      />
       {isFullPlaylistVisible && selectedPlaylist && (
         <FullPlaylist
           hideFullPlaylist={hideFullPlaylist}

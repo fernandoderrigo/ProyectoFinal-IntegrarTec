@@ -101,7 +101,7 @@ export default function Playlist({
               }
               className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
             >
-              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl">
+              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl place-self-center">
                 <img
                   src={image_Url}
                   alt={`${name} playlist cover`}
