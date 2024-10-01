@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Artist from '@/components/common/music/artists/Artists';
 import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
 import SongList from '@/components/common/music/songs/Songs';
 import SearchBar from '@/components/common/search-component/search-bar/SearchBar';
