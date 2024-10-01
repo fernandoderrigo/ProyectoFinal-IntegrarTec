@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
+import { tokenExpired } from '@/utils/jwtDecode';
 
 import Options from '../button/Options';
 import { SongContext } from '@/contexts/AudioContext';
@@ -9,6 +10,12 @@ import { SongListFallback } from '@/components/fallback/SongListFallback';
 export default function SongList({ filterFunction, order = [] }) {
   const [songList, setSongList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
 
   const { setSelectedSong } = useContext(SongContext);
 
@@ -17,35 +24,20 @@ export default function SongList({ filterFunction, order = [] }) {
     await createUserHistory(song.id);
   };
 
-  // Función para crear el historial del usuario
   const createUserHistory = async (songId) => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    if (!token) return;
 
     try {
       let response = await fetch('/api/history', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: songId,
         }),
       });
-      if (response.status === 401 && RefreshAccessToken) {
-        console.log('intento con refresToken');
-        response = await fetch('/api/history', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${RefreshAccessToken}`,
-          },
-          body: JSON.stringify({
-            id: songId,
-          }),
-        });
-      }
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -60,24 +52,15 @@ export default function SongList({ filterFunction, order = [] }) {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    if (!token) return;
 
     async function fetchSongsData() {
       try {
         let response = await fetch('/api/filter', {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        if (response.status === 401 && RefreshAccessToken) {
-          console.log('intento con refresToken');
-          response = await fetch('/api/filter', {
-            headers: {
-              Authorization: `Bearer ${RefreshAccessToken}`,
-            },
-          });
-        }
 
         if (response.ok) {
           const data = await response.json();
@@ -92,7 +75,7 @@ export default function SongList({ filterFunction, order = [] }) {
       }
     }
     fetchSongsData();
-  }, []);
+  }, [token]);
 
   if (loading) {
     return <SongListFallback />;

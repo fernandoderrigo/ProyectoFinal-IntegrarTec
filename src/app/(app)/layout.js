@@ -10,7 +10,7 @@ export default function LayoutOpen({ children }) {
       <main className="grid grid-cols-4 gap-4 px-4 pb-40 mt-16">
         {children}
       </main>
-      <footer className="fixed bottom-0 z-50 w-full">
+      <footer className="fixed bottom-0 z-40 w-full">
         <Reproduction />
         <NavBar />
       </footer>

@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Play from './button/Play';
 import AddSong from './button/Add';
 import { SongContext } from '@/contexts/AudioContext';
+import { tokenExpired } from '@/utils/jwtDecode';
 
 function PartialReproductionFallback() {
   return (
     <motion.section
-      initial={{ opacity: 0.7 }}
+      initial={{ opacity: 0.9 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="grid grid-cols-[3fr_1fr] bg-violet-800 p-2 shadow-lg animate-pulse"
@@ -24,7 +25,6 @@ function PartialReproductionFallback() {
       </div>
       <div className="grid content-center grid-cols-2 px-4">
         <div className="w-8 h-8 rounded-full bg-violet-700" />
-        <div className="w-8 h-8 rounded-full bg-violet-700" />
       </div>
     </motion.section>
   );
@@ -38,25 +38,21 @@ export default function PartialReproduction({
   const [history, setHistory] = useState([]);
   const hasRun = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    if (!token) return;
     async function fetchhistory() {
       try {
         let response = await fetch('/api/history', {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        if (response.status === 401 && RefreshAccessToken) {
-          console.log('intento con refresToken');
-          response = await fetch('/api/history', {
-            headers: {
-              Authorization: `Bearer ${RefreshAccessToken}`,
-            },
-          });
-        }
         if (response.ok) {
           const data = await response.json();
           const lastHistorySong = data.slice(0, 1);
@@ -71,7 +67,7 @@ export default function PartialReproduction({
       }
     }
     fetchhistory();
-  }, [setHistory]);
+  }, [setHistory, token]);
 
   const lastHistorySong = history
     .map(({ songs }) => songs)

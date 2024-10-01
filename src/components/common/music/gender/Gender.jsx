@@ -2,30 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { tokenExpired } from '@/utils/jwtDecode';
 
 export default function Gender({ showFullGender }) {
   const [genderList, setGenderList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
     async function fetchGendersData() {
       try {
         let response = await fetch('/api/gender', {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-
-        if (response.status === 401 && RefreshAccessToken) {
-          console.log('intento con refresToken');
-          response = await fetch('/api/gender', {
-            headers: {
-              Authorization: `Bearer ${RefreshAccessToken}`,
-            },
-          });
-        }
 
         if (response.ok) {
           const data = await response.json();
@@ -40,7 +37,7 @@ export default function Gender({ showFullGender }) {
       }
     }
     fetchGendersData();
-  }, []);
+  }, [token]);
 
   const SkeletonGender = () => (
     <article className="grid w-full grid-cols-4 col-span-4 gap-4 px-4 py-5 animate-pulse">
