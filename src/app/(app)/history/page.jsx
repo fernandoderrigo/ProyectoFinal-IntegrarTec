@@ -2,32 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import SongList from '@/components/common/music/songs/Songs';
-import { Suspense } from 'react';
-import LoadingPage from '@/components/loading/MyPlaylist';
 import { useRestartScroll } from '@/hooks/useRestartScroll';
+import { tokenExpired } from '@/utils/jwtDecode';
 
 export default function History() {
-  useRestartScroll()
+  useRestartScroll();
   const [history, setHistory] = useState([]);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
     async function fetchhistory() {
       try {
         let response = await fetch('/api/history', {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        if (response.status === 401 && RefreshAccessToken) {
-          console.log('intento con refresToken');
-          response = await fetch('/api/history', {
-            headers: {
-              Authorization: `Bearer ${RefreshAccessToken}`,
-            },
-          });
-        }
         if (response.ok) {
           const data = await response.json();
           setHistory(data);
@@ -39,7 +36,7 @@ export default function History() {
       }
     }
     fetchhistory();
-  }, []);
+  }, [token]);
 
   const songs = history.map(({ idSong }) => idSong);
 
@@ -47,8 +44,5 @@ export default function History() {
     return songs.some((songId) => songId === song.id);
   };
 
-  return (
-
-      <SongList filterFunction={filterFunction} order={songs} />
-  );
+  return <SongList filterFunction={filterFunction} order={songs} />;
 }

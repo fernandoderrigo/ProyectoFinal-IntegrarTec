@@ -64,10 +64,6 @@ export async function POST(request) {
     );
   }
 
-  console.log(songs);
-  console.log(playlistName);
-  console.log(userId);
-
   try {
     const playlistResponse = await fetch(
       'http://localhost:3001/api/playlists',
@@ -105,38 +101,65 @@ export async function PUT(request) {
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
+
   const tokenDecode = Decode(accessToken);
   if (!tokenDecode) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
+
   const userId = tokenDecode.id;
+
+  const { id, name, songs, idUser } = await request.json();
+  if (idUser !== userId) {
+    return NextResponse.json(
+      { error: 'Unauthorized: User ID does not match' },
+      { status: 403 }
+    );
+  }
+
+  if (!id) {
+    return NextResponse.json(
+      { error: 'Playlist ID is required' },
+      { status: 400 }
+    );
+  }
 
   try {
     const playlistResponse = await fetch(
-      'http://localhost:3001/api/playlists',
+      `http://localhost:3001/api/playlists/${id}`,
       {
         method: 'PUT',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ name, userId, songs }),
+        body: JSON.stringify({ name, id_user: userId, songs }),
       }
     );
-    if (!playlistResponse.ok) {
-      const errorData = await playlistResponse.json();
+
+    if (playlistResponse.status === 204) {
+      console.log('Playlist updated successfully, no content in response');
       return NextResponse.json(
-        { error: errorData.error || 'Error fetching playlists' },
-        { status: playlistResponse.status }
+        { message: 'Playlist updated successfully' },
+        { status: 200 }
       );
     }
 
-    const data = await playlistResponse.json();
-    console.log('User playlist created:', data);
-    return NextResponse.json(data, { status: 201 });
+    const contentType = playlistResponse.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await playlistResponse.json();
+      console.log('Playlist updated:', data);
+      return NextResponse.json(data, { status: 200 });
+    } else {
+      return NextResponse.json(
+        { error: 'Unexpected response format' },
+        { status: 500 }
+      );
+    }
   } catch (error) {
-    console.error('Error fetching playlists:', error);
+    console.error('Error updating playlist:', error);
     return NextResponse.json(
-      { error: 'Error fetching playlists' },
+      { error: 'Error updating playlist' },
       { status: 500 }
     );
   }

@@ -10,6 +10,7 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
   const userId = tokenDecode.id;
+  console.log(userId);
   try {
     const historyResponse = await fetch(
       `http://localhost:3001/api/user-history/user/${userId}`,

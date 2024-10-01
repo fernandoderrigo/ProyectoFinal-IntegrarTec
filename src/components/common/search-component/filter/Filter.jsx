@@ -2,30 +2,29 @@
 import { IoMdAdd } from 'react-icons/io';
 import { FaMinus } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { tokenExpired } from '@/utils/jwtDecode';
 
 export default function Tags({ onGenreSelect }) {
   const [genderList, setGenderList] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    const RefreshAccessToken = localStorage.getItem('refreshToken');
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
     async function fetchGendersData() {
       try {
         let response = await fetch('/api/gender', {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        if (response.status === 401 && RefreshAccessToken) {
-          console.log('intento con refresToken');
-          response = await fetch('/api/gender', {
-            headers: {
-              Authorization: `Bearer ${RefreshAccessToken}`,
-            },
-          });
-        }
         if (response.ok) {
           const data = await response.json();
           setGenderList(data);
@@ -37,7 +36,7 @@ export default function Tags({ onGenreSelect }) {
       }
     }
     fetchGendersData();
-  }, []);
+  }, [token]);
 
   const displayedGenders = showAll ? genderList : genderList.slice(0, 3);
 

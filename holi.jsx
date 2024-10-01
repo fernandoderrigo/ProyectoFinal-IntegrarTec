@@ -1,40 +1,53 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { SlOptions } from 'react-icons/sl';
+import Options from '../button/Options';
 import { PlaylistFallback } from '@/components/fallback/PlaylistFallback';
-import { tokenExpired } from '@/utils/jwtDecode';
+import UpdatePlaylist from './UpdatePlaylist';
 
-export default function Playlist({
-  showFullPlaylist,
-  showUpdatePlaylist,
-  filterFunction,
-  order = [],
-}) {
+export default function Component() {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
-    const [token, setToken] = useState(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [isUpdateVisible, setIsUpdateVisible] = useState(false);
 
-    useEffect(() => {
-      const token = tokenExpired();
-      setToken(token);
-    }, []); 
+  const showFullPlaylist = (playlist) => {
+    setSelectedPlaylist(playlist);
+  };
+
+  const hideFullPlaylist = () => {
+    setSelectedPlaylist(null);
+  };
+
+  const updatePlaylist = (playlist) => {
+    setSelectedPlaylist(playlist);
+    setIsUpdateVisible(true);
+  };
 
   useEffect(() => {
-    if (!token) return;
-
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     async function fetchPlaylists() {
       try {
         let response = await fetch('/api/playlist', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
+        if (response.status === 401 && refreshToken) {
+          console.log('Attempting with refresh token');
+          response = await fetch('/api/playlist', {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          });
+        }
         if (response.ok) {
           const data = await response.json();
           setPlaylists(data);
         } else {
-          console.error('Error al obtener las canciones');
+          console.error('Error fetching playlists');
         }
       } catch (error) {
         console.error('Error fetching playlists:', error);
@@ -43,19 +56,11 @@ export default function Playlist({
       }
     }
     fetchPlaylists();
-  }, [token]);
+  }, []);
 
   if (loading) {
     return <PlaylistFallback />;
   }
-
-  const filteredPlaylist = filterFunction
-    ? playlists
-        .filter(filterFunction)
-        .sort((a, b) =>
-          order.length > 0 ? order.indexOf(a.id) - order.indexOf(b.id) : 0
-        )
-    : playlists;
 
   const container = {
     hidden: { opacity: 1, scale: 0 },
@@ -78,14 +83,14 @@ export default function Playlist({
   };
 
   return (
-    <motion.section
-      className="col-span-4 px-4"
-      variants={container}
-      initial="hidden"
-      animate="visible"
-    >
-      {filteredPlaylist.map(
-        ({ id, name, nick_Name, image_Url, playlistSongs, id_user }) => (
+    <>
+      <motion.section
+        className="col-span-4 px-4"
+        variants={container}
+        initial="hidden"
+        animate="visible"
+      >
+        {playlists.map(({ id, name, nick_Name, image_Url, playlistSongs }) => (
           <motion.article
             key={id}
             className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
@@ -118,22 +123,29 @@ export default function Playlist({
               </section>
             </button>
             <button
+              className="content-center col-start-4 "
               onClick={() =>
-                showUpdatePlaylist({
+                updatePlaylist({
                   playlistSongs,
                   nick_Name,
                   name,
-                  id,
-                  id_user,
                 })
               }
-              className="content-center col-start-4"
             >
-              <SlOptions className="basic-reproduction-button" />
+              <Options />
             </button>
           </motion.article>
-        )
+        ))}
+      </motion.section>
+      {isUpdateVisible && selectedPlaylist && (
+        <UpdatePlaylist
+          hideFullPlaylist={() => {
+            setIsUpdateVisible(false);
+            setSelectedPlaylist(null);
+          }}
+          playlist={selectedPlaylist}
+        />
       )}
-    </motion.section>
+    </>
   );
 }
