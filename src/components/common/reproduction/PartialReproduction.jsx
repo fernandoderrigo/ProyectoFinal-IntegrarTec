@@ -25,7 +25,7 @@ function PartialReproductionFallback() {
         </div>
       </div>
       <div className="grid content-center grid-cols-2 px-4">
-        <div className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full bg-violet-700" />
+        <div className="w-8 h-8 rounded-full md:w-10 md:h-10 lg:w-12 lg:h-12 bg-violet-700" />
       </div>
     </motion.section>
   );
@@ -161,7 +161,7 @@ export default function PartialReproduction({ showFullReproduction, audioRef }) 
               variants={itemVariants}
             >
               <motion.h2
-                className="font-semibold text-neutralViolet-50 text-sm md:text-base lg:text-lg"
+                className="text-sm font-semibold text-neutralViolet-50 md:text-base lg:text-lg"
                 style={{ viewTransitionName: 'song-name' }}
                 variants={itemVariants}
               >
@@ -189,13 +189,13 @@ export default function PartialReproduction({ showFullReproduction, audioRef }) 
             <audio ref={audioRef} src={infoSong.audioUrl}></audio>
             <Play
               audioRef={audioRef}
-              className="text-neutralViolet-50 hover:text-neutralViolet-200 text-sm md:text-base lg:text-lg"
+              className="text-sm text-neutralViolet-50 hover:text-neutralViolet-200 md:text-base lg:text-lg"
             />
-            <AddSong className="text-neutralViolet-50 hover:text-neutralViolet-200 text-sm md:text-base lg:text-lg" />
+            <AddSong className="text-sm text-neutralViolet-50 hover:text-neutralViolet-200 md:text-base lg:text-lg" />
           </motion.section>
           <button 
             onClick={() => setIsVisible(!isVisible)} // Cambia la visibilidad al hacer clic
-            className="absolute top-2 right-2 text-neutralViolet-50 bg-transparent"
+            className="absolute bg-transparent top-2 right-2 text-neutralViolet-50"
           >
             {isVisible ? (
               <FaChevronUp size={24} /> // Flecha hacia arriba
@@ -208,7 +208,7 @@ export default function PartialReproduction({ showFullReproduction, audioRef }) 
       {!isVisible && ( // Mostrar un botón para volver a mostrar la barra
         <button 
           onClick={() => setIsVisible(true)} // Mostrar la barra
-          className="fixed bottom-4 right-4 text-neutralViolet-50 bg-violet-700 rounded-full p-2 shadow-lg"
+          className="fixed p-2 rounded-full shadow-lg bottom-16 right-4 text-neutralViolet-50 bg-violet-700 xl:bottom-4"
         >
           <FaChevronDown size={24} /> {/* Flecha hacia abajo para mostrar la barra */}
         </button>
