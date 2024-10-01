@@ -5,8 +5,6 @@ import SongList from '@/components/common/music/songs/Songs';
 import SelectGender from '@/components/common/music/gender/SelectGender';
 import SelectPlaylist from '@/components/common/music/playlist/SelectPlaylist';
 import { useRestartScroll } from '@/hooks/useRestartScroll';
-import Microphone from '@/components/common/navigation-bar/Microphone';
-import Reproduction from '@/components/common/reproduction/Reproduction'; 
 
 export default function Page() {
   useRestartScroll();
@@ -53,13 +51,6 @@ export default function Page() {
       <SelectGender onGenreSelect={handleGenreSelect} />
       <SongList filterFunction={filterFunction} />
       <SelectPlaylist filterFunction={filterFunction} />
-      <Microphone
-        playSong={playSong}
-        pauseSong={pauseSong}
-        nextSong={nextSong}
-        prevSong={prevSong}
-      />
-      <Reproduction />
     </article>
   );
 }

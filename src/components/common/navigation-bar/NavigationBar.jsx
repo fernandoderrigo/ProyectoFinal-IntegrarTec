@@ -16,14 +16,6 @@ export default function NavBar() {
   const { isListening, startListening, stopListening } = useMicrophone();
   const [color, setColor] = useState('white');
 
-    const handleClick = () => {
-      if (isListening) {
-        stopListening();
-      } else {
-        startListening();
-      }
-    };
-
   // Función para la navegación basada en comandos
   const handleNavigate = (route) => {
     router.push(route);  // Usa push desde next/navigation
@@ -57,7 +49,6 @@ export default function NavBar() {
         </li>
         <li className="flex items-center justify-center">
           <Microphone
-            className={`${isListening ? 'text-green-500' : 'text-white'}`}
             onNavigate={handleNavigate}
             onColorChange={handleColorChange}
             onBackgroundChange={handleBackgroundChange}
