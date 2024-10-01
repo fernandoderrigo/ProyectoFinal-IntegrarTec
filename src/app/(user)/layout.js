@@ -1,3 +1,5 @@
+'use client';
+
 import HeaderProfile from '@/components/profile/header/HeaderProfile';
 import NavMicrophoneOnly from '@/components/common/navigation-bar/NavMicrophoneOnly';
 import { useEffect } from 'react';
