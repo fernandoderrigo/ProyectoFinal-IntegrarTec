@@ -1,19 +1,24 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { usePlaylist } from '@/contexts/PlaylistContext';
 import { PlaylistFallback } from '@/components/fallback/PlaylistFallback';
 import { tokenExpired } from '@/utils/jwtDecode';
 
-export default function SongsInPlaylist({ playlistSongs, searchTerm }) {
+export default function SongsInPlaylist({
+  playlistSongs,
+  searchTerm = '',
+  onSelectedSongsChange,
+}) {
   const [songList, setSongList] = useState([]);
   const { selectedSongs, setSelectedSongs } = usePlaylist();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const token = tokenExpired();
-    setToken(token);
-  }, []); 
+    const fetchedToken = tokenExpired();
+    setToken(fetchedToken);
+  }, []);
 
   useEffect(() => {
     if (!token) return;
@@ -24,7 +29,6 @@ export default function SongsInPlaylist({ playlistSongs, searchTerm }) {
             Authorization: `Bearer ${token}`,
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           setSongList(data);
@@ -38,9 +42,15 @@ export default function SongsInPlaylist({ playlistSongs, searchTerm }) {
         setLoading(false);
       }
     }
-
     fetchSongsData();
   }, [playlistSongs, setSelectedSongs, token]);
+
+  useEffect(() => {
+    const selectedSongsData = songList
+      .filter((song) => selectedSongs.includes(song.id))
+      .map((song) => ({ id: song.id, name: song.name }));
+    onSelectedSongsChange(selectedSongsData);
+  }, [selectedSongs, songList, onSelectedSongsChange]);
 
   if (loading) {
     return <PlaylistFallback />;
@@ -65,6 +75,7 @@ export default function SongsInPlaylist({ playlistSongs, searchTerm }) {
   const selectedSongsList = filteredSongs.filter((song) =>
     selectedSongs.includes(song.id)
   );
+
   const unselectedSongsList = filteredSongs.filter(
     (song) => !selectedSongs.includes(song.id)
   );

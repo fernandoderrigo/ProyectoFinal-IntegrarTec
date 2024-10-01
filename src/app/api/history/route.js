@@ -14,11 +14,14 @@ export async function GET(request) {
   const userId = tokenDecode.id;
   console.log(userId);
   try {
-    const historyResponse = await fetch(`${apiUrl}/user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const historyResponse = await fetch(
+      `${apiUrl}/user-history/user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     if (!historyResponse.ok) {
       const errorData = await historyResponse.json();
       return NextResponse.json(

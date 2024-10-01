@@ -35,6 +35,9 @@ export default function CreatePlaylist({ hideFullPlaylist, playlist }) {
     setIsEditing(false);
     setPlaylistName(playlist?.name || '');
   };
+  console.log("playlistName");
+
+  console.log(playlistName)
 
   const handleCreatePlaylist = async () => {
     setIsCreating(true);

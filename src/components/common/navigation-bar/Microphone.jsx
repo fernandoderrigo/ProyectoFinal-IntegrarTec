@@ -78,13 +78,6 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       if (!commandProcessed) {
         speak("Comando no reconocido. Intenta nuevamente.");
       }
-
-      const id = setTimeout(() => {
-        recognition.stop();
-        setTimeout(() => recognition.start(), 1000);
-      }, 5000);
-
-      setTimeoutId(id);
     };
 
     const processCommand = async (command) => {

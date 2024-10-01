@@ -46,6 +46,8 @@ export async function GET(request) {
 
 export async function POST(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -55,6 +57,10 @@ export async function POST(request) {
   }
   const userId = tokenDecode.id;
   const { playlistName, songs } = await request.json();
+  console.log('playlistName');
+  console.log(playlistName);
+
+  console.log(playlistName + songs);
 
   if (!playlistName || !songs) {
     return NextResponse.json(
@@ -64,17 +70,14 @@ export async function POST(request) {
   }
 
   try {
-    const playlistResponse = await fetch(
-      'http://localhost:3001/api/playlists',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ name: playlistName, id_user: userId, songs }),
-      }
-    );
+    const playlistResponse = await fetch(`${apiUrl}/playlists`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name: playlistName, id_user: userId, songs }),
+    });
     if (!playlistResponse.ok) {
       const errorData = await playlistResponse.json();
       return NextResponse.json(
@@ -97,6 +100,8 @@ export async function POST(request) {
 
 export async function PUT(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -124,17 +129,14 @@ export async function PUT(request) {
   }
 
   try {
-    const playlistResponse = await fetch(
-      `http://localhost:3001/api/playlists/${id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ name, id_user: userId, songs }),
-      }
-    );
+    const playlistResponse = await fetch(`${apiUrl}/playlists/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name, id_user: userId, songs }),
+    });
 
     if (playlistResponse.status === 204) {
       console.log('Playlist updated successfully, no content in response');
