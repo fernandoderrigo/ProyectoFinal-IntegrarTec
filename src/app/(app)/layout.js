@@ -1,8 +1,6 @@
 import NavBar from '@/components/common/navigation-bar/NavigationBar';
 import Header from '@/components/profile/header/Header';
 import Reproduction from '@/components/common/reproduction/Reproduction';
-import { Suspense } from 'react';
-
 export default function LayoutOpen({ children }) {
   return (
     <>
