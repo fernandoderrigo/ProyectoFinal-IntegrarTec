@@ -8,8 +8,6 @@ export default function Gender({ showFullGender }) {
   const [genderList, setGenderList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
-  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
-  console.log(apiUrl)
 
   useEffect(() => {
     const token = tokenExpired();

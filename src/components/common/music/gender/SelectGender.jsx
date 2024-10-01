@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+'use client';
+
+import  { useState } from 'react';
 import Gender from './Gender';
 import FullGender from './FullGender';
 import { Suspense } from 'react';
@@ -8,9 +10,10 @@ const SelectGender = ({ onGenreSelect }) => {
   const [selectedGenres, setSelectedGenres] = useState([]);
 
   const showFullGender = (genre) => {
-    setSelectedGenres([genre.gender]);
+    const newSelectedGenres = [...selectedGenres, genre.gender]; 
+    setSelectedGenres(newSelectedGenres);
     setIsFullGenderVisible(true);
-    onGenreSelect([genre.gender]);
+    onGenreSelect(newSelectedGenres); 
   };
 
   const hideFullGender = () => {
