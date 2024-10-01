@@ -3,6 +3,8 @@ import { Decode } from '@/utils/jwtDecode';
 
 export async function PUT(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -15,17 +17,14 @@ export async function PUT(request) {
   const data = await request.json();
 
   try {
-    const userResponse = await fetch(
-      `http://localhost:3001/api/users/${userId}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const userResponse = await fetch(`${apiUrl}/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
 
     if (userResponse.status === 204) {
       console.log('User updated successfully, no content in response');
@@ -54,6 +53,8 @@ export async function PUT(request) {
 
 export async function GET(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -66,14 +67,11 @@ export async function GET(request) {
 
   console.log(userId);
   try {
-    const userResponse = await fetch(
-      `http://localhost:3001/api/users/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const userResponse = await fetch(`${apiUrl}/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (!userResponse.ok) {
       const errorData = await userResponse.json();
       return NextResponse.json(

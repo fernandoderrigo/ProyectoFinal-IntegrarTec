@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { Decode } from '@/utils/jwtDecode';
 export async function GET(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -12,14 +14,11 @@ export async function GET(request) {
   const userId = tokenDecode.id;
   console.log(userId);
   try {
-    const historyResponse = await fetch(
-      `http://localhost:3001/api/user-history/user/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const historyResponse = await fetch(`${apiUrl}/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (!historyResponse.ok) {
       const errorData = await historyResponse.json();
       return NextResponse.json(
@@ -70,6 +69,8 @@ export async function GET(request) {
 
 export async function POST(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   if (!accessToken) {
     return NextResponse.json({ error: 'No token provided' }, { status: 401 });
   }
@@ -89,7 +90,7 @@ export async function POST(request) {
   }
 
   try {
-    const response = await fetch(`http://localhost:3001/api/user-history`, {
+    const response = await fetch(`${apiUrl}/user-history`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,9 +116,5 @@ export async function POST(request) {
     return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error('Error creating user history:', error);
-    return NextResponse.json(
-      { error: 'Error creating user history' },
-      { status: 500 }
-    );
   }
 }

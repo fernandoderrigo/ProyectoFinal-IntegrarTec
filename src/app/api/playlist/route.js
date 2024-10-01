@@ -3,15 +3,14 @@ import { Decode } from '@/utils/jwtDecode';
 
 export async function GET(request) {
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
   try {
-    const playlistResponse = await fetch(
-      'http://localhost:3001/api/playlists',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const playlistResponse = await fetch(`${apiUrl}/playlists`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (!playlistResponse.ok) {
       const errorData = await playlistResponse.json();
       return NextResponse.json(

@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     const formData = await request.formData();
-    const response = await fetch('http://localhost:3001/api/users', {
+    const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+
+    const response = await fetch(`${apiUrl}/users`, {
       method: 'POST',
       body: formData,
     });
