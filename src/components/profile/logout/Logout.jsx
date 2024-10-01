@@ -9,7 +9,7 @@ export default function Logout() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     setIsOpen(false);
     router.push('/login');

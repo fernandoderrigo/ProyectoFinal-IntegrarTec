@@ -1,7 +1,6 @@
 'use client';
 
 import { FaUserEdit } from 'react-icons/fa';
-import DeleteUserButton from '@/components/profile/deleteProfile/DeleteProfile';
 import Logout from '@/components/profile/logout/Logout';
 import Link from 'next/link';
 
@@ -18,7 +17,6 @@ export default function Profile() {
             <FaUserEdit />
           </span>
         </Link>
-        <DeleteUserButton />
         <Logout className="col-span-4" />
       </nav>
     </section>

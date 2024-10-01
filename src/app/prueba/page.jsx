@@ -1,10 +1,10 @@
 'use client'
 
-import UserProfile from "@/components/profile/profile/Profile";
+import ProfileComponent from '@/components/profile/profile/Profile';
 
 const App = () => {
 
-  return <UserProfile />;
+  return <ProfileComponent />;
 };
 
 export default App;
