@@ -3,7 +3,7 @@
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { useRef, useEffect } from 'react';
 import SongList from '../songs/Songs';
-const FullGender = ({ hideFullGender, selectedGenres }) => {
+const FullGender = ({ hideFullGender, selectedGenre }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -28,8 +28,9 @@ const FullGender = ({ hideFullGender, selectedGenres }) => {
     }
   };
 
+  // Se mantiene el filtro aquí, ya que FullGender podría tener su propia lógica de filtrado
   const filterFunction = (song) => {
-    return selectedGenres.length === 0 || selectedGenres.includes(song.gender);
+    return !selectedGenre || song.gender === selectedGenre; // Solo comparar con el género seleccionado
   };
 
   return (
@@ -45,7 +46,8 @@ const FullGender = ({ hideFullGender, selectedGenres }) => {
         <section className="flex flex-col h-full">
           <header className="sticky top-0 z-10 flex items-center justify-between p-4 bg-violet-900">
             <div>
-              <h2 className="text-xl font-bold">{selectedGenres.join(', ')}</h2>
+              <h2 className="text-xl font-bold">{selectedGenre}</h2>{' '}
+              {/* Mostrar solo un género */}
             </div>
             <button
               onClick={hideFullGender}
@@ -57,8 +59,7 @@ const FullGender = ({ hideFullGender, selectedGenres }) => {
           </header>
 
           <div className="flex-grow pb-40 overflow-y-auto">
-              <SongList filterFunction={filterFunction} />
-
+            <SongList filterFunction={filterFunction} />
           </div>
         </section>
       </div>

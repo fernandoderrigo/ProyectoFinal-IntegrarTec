@@ -1,19 +1,18 @@
 'use client';
 
-import  { useState } from 'react';
+import React, { useState } from 'react';
 import Gender from './Gender';
 import FullGender from './FullGender';
 import { Suspense } from 'react';
 
 const SelectGender = ({ onGenreSelect }) => {
   const [isFullGenderVisible, setIsFullGenderVisible] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null); // Cambiar a una cadena en lugar de un array
 
   const showFullGender = (genre) => {
-    const newSelectedGenres = [...selectedGenres, genre.gender]; 
-    setSelectedGenres(newSelectedGenres);
+    setSelectedGenre(genre.gender); // Guardar solo un género
     setIsFullGenderVisible(true);
-    onGenreSelect(newSelectedGenres); 
+    onGenreSelect(genre.gender); // Pasar el género seleccionado al componente padre
   };
 
   const hideFullGender = () => {
@@ -39,7 +38,7 @@ const SelectGender = ({ onGenreSelect }) => {
       {isFullGenderVisible && (
         <FullGender
           hideFullGender={hideFullGender}
-          selectedGenres={selectedGenres}
+          selectedGenre={selectedGenre} // Pasar solo el género seleccionado
         />
       )}
     </section>
