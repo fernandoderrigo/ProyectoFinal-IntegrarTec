@@ -170,7 +170,6 @@ const Microphone = ({ onNavigate, onColorChange, onBackgroundChange }) => {
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => {
         setIsSpeaking(false);
-        // Reinicia el estado después de hablar
         setHasSpoken(false);
       };
       window.speechSynthesis.speak(utterance);

@@ -26,10 +26,10 @@ export default function Page() {
   };
 
   return (
-      <article className="col-span-4">
-        <SelectGender onGenreSelect={handleGenreSelect} />
-        <SongList filterFunction={filterFunction} />
-        <SelectPlaylist filterFunction={filterFunction} />
-      </article>
+    <article className="col-span-4">
+      <SelectGender onGenreSelect={handleGenreSelect} />
+      <SongList filterFunction={filterFunction} />
+      <SelectPlaylist filterFunction={filterFunction} />
+    </article>
   );
 }

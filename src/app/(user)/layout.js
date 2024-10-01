@@ -5,9 +5,7 @@ export default function LayoutOpen({ children }) {
   return (
     <>
       <HeaderProfile />
-      <main className="pt-56 pb-16 grid grid-cols-4 gap-4 px-4">
-        {children}
-      </main>
+      <main className="grid grid-cols-4 gap-4 px-4 pb-16 ">{children}</main>
       <footer className="fixed bottom-0 w-full">
         <NavMicrophoneOnly />
       </footer>

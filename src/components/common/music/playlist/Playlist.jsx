@@ -13,12 +13,12 @@ export default function Playlist({
 }) {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
-    const [token, setToken] = useState(null);
+  const [token, setToken] = useState(null);
 
-    useEffect(() => {
-      const token = tokenExpired();
-      setToken(token);
-    }, []); 
+  useEffect(() => {
+    const token = tokenExpired();
+    setToken(token);
+  }, []);
 
   useEffect(() => {
     if (!token) return;

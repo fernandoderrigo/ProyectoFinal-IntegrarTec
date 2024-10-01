@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { GoHomeFill } from 'react-icons/go';
 import { ImBooks } from 'react-icons/im';
 import { PiMusicNotesPlusFill } from 'react-icons/pi';
-import { useRouter } from 'next/navigation';  // Cambiado a next/navigation
+import { useRouter } from 'next/navigation'; 
 import { useState } from 'react';
 import Microphone from './Microphone';
 import useMicrophone from '@/hooks/useMicrophone';
