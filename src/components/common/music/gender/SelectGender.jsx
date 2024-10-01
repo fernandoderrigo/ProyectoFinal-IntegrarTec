@@ -10,7 +10,7 @@ const SelectGender = ({ onGenreSelect }) => {
   const showFullGender = (genre) => {
     setSelectedGenres([genre.gender]);
     setIsFullGenderVisible(true);
-    onGenreSelect([genre.gender]); // Pass the selected genre to the parent
+    onGenreSelect([genre.gender]);
   };
 
   const hideFullGender = () => {

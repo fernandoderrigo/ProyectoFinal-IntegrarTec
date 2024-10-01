@@ -8,6 +8,8 @@ export default function Gender({ showFullGender }) {
   const [genderList, setGenderList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const apiUrl = process.env.NEXT_PUBLIC_URL_API;
+  console.log(apiUrl)
 
   useEffect(() => {
     const token = tokenExpired();
@@ -28,7 +30,7 @@ export default function Gender({ showFullGender }) {
           const data = await response.json();
           setGenderList(data);
         } else {
-          console.error('Error al obtener los generos');
+          console.error('Error al obtener los géneros');
         }
       } catch (error) {
         console.error('Error fetching genders:', error);
@@ -40,11 +42,11 @@ export default function Gender({ showFullGender }) {
   }, [token]);
 
   const SkeletonGender = () => (
-    <article className="grid w-full grid-cols-4 col-span-4 gap-4 px-4 py-5 animate-pulse">
+    <article className="grid w-full grid-cols-2 gap-4 px-4 py-5 sm:grid-cols-3 md:grid-cols-4 animate-pulse">
       {[...Array(4)].map((_, index) => (
         <div
           key={index}
-          className="col-span-2 bg-gray-300 aspect-video rounded-xl"
+          className="col-span-1 bg-gray-300 aspect-video rounded-xl"
         />
       ))}
     </article>
@@ -71,21 +73,21 @@ export default function Gender({ showFullGender }) {
 
   return (
     <motion.article
-      className="grid w-full grid-cols-4 col-span-4 gap-4 px-4 py-5"
+      className="grid w-full grid-cols-2 gap-4 px-4 py-5 sm:grid-cols-3 md:grid-cols-4"
       variants={container}
       initial="hidden"
       animate="show"
     >
       {genderList.map(({ gender, image }) => (
         <motion.button
-          className="grid aspect-video col-span-2 grid-cols-2 content-center rounded-xl gap-4 bg-waterGreen-500 p-2.5 hover:bg-waterGreen-600 transition-colors duration-300"
+          className="grid aspect-video col-span-1 grid-cols-2 content-center rounded-xl gap-4 bg-waterGreen-500 p-2.5 hover:bg-waterGreen-600 transition-colors duration-300"
           key={gender}
           onClick={() => showFullGender({ gender })}
           variants={item}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <div className="flex items-center w-2/5 h-full pl-2 text-lg">
+          <div className="flex items-center w-full h-full pl-2 text-lg">
             <h2 className="font-semibold text-white">{gender}</h2>
           </div>
           <picture className="w-full col-start-2 overflow-hidden rounded-xl place-self-center">

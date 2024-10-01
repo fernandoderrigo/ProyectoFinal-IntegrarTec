@@ -1,19 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEnvelope, FaLock, FaCheck, FaTimes } from 'react-icons/fa';
-import Microphone from '@/components/common/navigation-bar/Microphone';
 import RegisterLogin from '@/components/common/navigation-bar/LoginRegister';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
   const [error, setError] = useState('');
   const router = useRouter();
-      const handleNavigate = (route) => {
-        router.push(route);
-      };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,7 +21,10 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: emailRef.current,
+          password: passwordRef.current,
+        }),
       });
       const data = await response.json();
       if (response.ok) {
@@ -40,6 +39,7 @@ export default function LoginPage() {
       setError('Server error');
     }
   };
+
   return (
     <section className="relative flex flex-col items-center justify-start min-h-screen col-span-4 p-5 text-white">
       <RegisterLogin />
@@ -51,8 +51,7 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => (emailRef.current = e.target.value)}
             className="w-full p-2.5 bg-transparent text-white text-lg outline-none border-none rounded-lg"
             required
           />
@@ -62,8 +61,7 @@ export default function LoginPage() {
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => (passwordRef.current = e.target.value)}
             className="w-full p-2.5 bg-transparent text-white text-lg outline-none border-none rounded-lg"
             required
           />
@@ -88,8 +86,6 @@ export default function LoginPage() {
           </button>
         </section>
       </form>
-
-      <Microphone onNavigate={handleNavigate} />
 
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="relative w-full h-full bg-gradient-to-b from-blue-900 via-blue-800 to-black">

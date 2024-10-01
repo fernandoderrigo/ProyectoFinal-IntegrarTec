@@ -14,7 +14,7 @@ export default function HeaderProfile() {
       <picture className="overflow-hidden border-4 border-white rounded-full w-14 h-14">
         <img
           className="object-cover w-full h-full"
-          src="https://i.scdn.co/image/ab67fb8200005caf474a477debc822a3a45c5acb"
+          src="https://escuchafacil.s3.us-east-2.amazonaws.com/EscuchaFacil.png"
           alt="Profile"
         />
       </picture>
