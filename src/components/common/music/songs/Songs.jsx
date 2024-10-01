@@ -118,11 +118,11 @@ export default function SongList({ filterFunction, order = [] }) {
         ({ id, name, duration, gender, imageUrl, audioUrl, artists }) => (
           <motion.section
             key={id}
-            className="grid grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 px-4 py-5 my-4 bg-neutralViolet-900/40 rounded-xl"
             variants={item}
           >
             <button
-              className="grid grid-cols-3 col-span-3 col-start-1 gap-4"
+              className="grid grid-cols-2 col-span-2 col-start-1 gap-4"
               onClick={() =>
                 handleClick({
                   id,
@@ -135,16 +135,16 @@ export default function SongList({ filterFunction, order = [] }) {
                 })
               }
             >
-              <picture className="w-full col-start-1 overflow-hidden aspect-square rounded-xl place-self-center">
-                <img src={imageUrl} alt={gender} />
+              <picture className="w-full overflow-hidden aspect-square rounded-xl place-self-center">
+                <img src={imageUrl} alt={gender} className="object-cover w-full h-full" />
               </picture>
-              <section className="col-span-2 col-start-2 text-start">
-                <h2>{name}</h2>
+              <section className="text-start">
+                <h2 className="text-lg font-semibold">{name}</h2>
                 <p className="text-sm">{artists}</p>
                 <p className="text-sm">{duration}</p>
               </section>
             </button>
-            <button className="content-center col-start-4">
+            <button className="content-center col-start-2 sm:col-start-3 lg:col-start-4">
               <Options />
             </button>
           </motion.section>

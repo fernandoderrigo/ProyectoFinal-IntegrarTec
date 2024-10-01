@@ -6,6 +6,7 @@ import Play from './button/Play';
 import AddSong from './button/Add';
 import { SongContext } from '@/contexts/AudioContext';
 import { tokenExpired } from '@/utils/jwtDecode';
+import { FaChevronUp, FaChevronDown } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
 function PartialReproductionFallback() {
   return (
@@ -13,7 +14,7 @@ function PartialReproductionFallback() {
       initial={{ opacity: 0.9 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="grid grid-cols-[3fr_1fr] bg-violet-800 p-2 shadow-lg animate-pulse"
+      className="grid grid-cols-[3fr_1fr] md:grid-cols-[6fr_1fr] lg:grid-cols-[5fr_1fr] bg-violet-800 p-2 md:p-4 lg:p-6 shadow-lg animate-pulse"
     >
       <div className="grid grid-cols-3 col-start-1 gap-4 text-left">
         <div className="w-full col-start-1 overflow-hidden aspect-square rounded-xl bg-violet-700" />
@@ -24,21 +25,20 @@ function PartialReproductionFallback() {
         </div>
       </div>
       <div className="grid content-center grid-cols-2 px-4">
-        <div className="w-8 h-8 rounded-full bg-violet-700" />
+        <div className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full bg-violet-700" />
       </div>
     </motion.section>
   );
 }
 
-export default function PartialReproduction({
-  showFullReproduction,
-  audioRef,
-}) {
+export default function PartialReproduction({ showFullReproduction, audioRef }) {
   const { selectedSong, setSelectedSong } = useContext(SongContext);
   const [history, setHistory] = useState([]);
   const hasRun = useRef(false);
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const [isVisible, setIsVisible] = useState(true); // Estado para la visibilidad de la barra
+
   useEffect(() => {
     const token = tokenExpired();
     setToken(token);
@@ -46,7 +46,7 @@ export default function PartialReproduction({
 
   useEffect(() => {
     if (!token) return;
-    async function fetchhistory() {
+    async function fetchHistory() {
       try {
         let response = await fetch('/api/history', {
           headers: {
@@ -66,7 +66,7 @@ export default function PartialReproduction({
         setIsLoading(false);
       }
     }
-    fetchhistory();
+    fetchHistory();
   }, [setHistory, token]);
 
   const lastHistorySong = history
@@ -132,67 +132,87 @@ export default function PartialReproduction({
 
   return (
     <AnimatePresence>
-      <motion.section
-        className="grid grid-cols-[3fr_1fr] bg-violet-800 p-2 shadow-lg"
-        style={{ viewTransitionName: 'reproduction-container' }}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.button
-          className="grid grid-cols-3 col-start-1 gap-4 text-left"
-          onClick={showFullReproduction}
-          variants={itemVariants}
-        >
-          <motion.picture
-            className="w-full col-start-1 overflow-hidden aspect-square rounded-xl"
-            style={{ viewTransitionName: 'song-image' }}
-            variants={itemVariants}
-          >
-            <img
-              src={infoSong.imageUrl}
-              alt={infoSong.gender}
-              className="object-cover w-full h-full"
-            />
-          </motion.picture>
-          <motion.section
-            className="col-span-2 col-start-2"
-            variants={itemVariants}
-          >
-            <motion.h2
-              className="font-semibold text-neutralViolet-50"
-              style={{ viewTransitionName: 'song-name' }}
-              variants={itemVariants}
-            >
-              {infoSong.name}
-            </motion.h2>
-            <motion.p
-              className="text-sm text-neutralViolet-200"
-              style={{ viewTransitionName: 'song-artist' }}
-              variants={itemVariants}
-            >
-              {infoSong.artists}
-            </motion.p>
-            <motion.p
-              className="text-sm text-neutralViolet-300"
-              variants={itemVariants}
-            >
-              {infoSong.duration}
-            </motion.p>
-          </motion.section>
-        </motion.button>
+      {isVisible && ( // Renderizar solo si isVisible es true
         <motion.section
-          className="grid content-center grid-cols-2 px-4"
-          variants={itemVariants}
+          className="grid grid-cols-[3fr_1fr] md:grid-cols-[4fr_1fr] lg:grid-cols-[5fr_1fr] bg-violet-800 p-2 md:p-4 lg:p-6 shadow-lg max-w-screen-lg mx-auto relative"
+          style={{ viewTransitionName: 'reproduction-container' }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <audio ref={audioRef} src={infoSong.audioUrl}></audio>
-          <Play
-            audioRef={audioRef}
-            className="text-neutralViolet-50 hover:text-neutralViolet-200"
-          />
-          <AddSong className="text-neutralViolet-50 hover:text-neutralViolet-200" />
+          <motion.button
+            className="grid grid-cols-3 col-start-1 gap-4 text-left"
+            onClick={showFullReproduction}
+            variants={itemVariants}
+          >
+            <motion.picture
+              className="w-full col-start-1 overflow-hidden aspect-square rounded-xl"
+              style={{ viewTransitionName: 'song-image' }}
+              variants={itemVariants}
+            >
+              <img
+                src={infoSong.imageUrl}
+                alt={infoSong.gender}
+                className="object-cover w-full h-full"
+              />
+            </motion.picture>
+            <motion.section
+              className="col-span-2 col-start-2 space-y-2"
+              variants={itemVariants}
+            >
+              <motion.h2
+                className="font-semibold text-neutralViolet-50 text-sm md:text-base lg:text-lg"
+                style={{ viewTransitionName: 'song-name' }}
+                variants={itemVariants}
+              >
+                {infoSong.name}
+              </motion.h2>
+              <motion.p
+                className="text-xs md:text-sm lg:text-base text-neutralViolet-200"
+                style={{ viewTransitionName: 'song-artist' }}
+                variants={itemVariants}
+              >
+                {infoSong.artists}
+              </motion.p>
+              <motion.p
+                className="text-xs md:text-sm lg:text-base text-neutralViolet-300"
+                variants={itemVariants}
+              >
+                {infoSong.duration}
+              </motion.p>
+            </motion.section>
+          </motion.button>
+          <motion.section
+            className="grid content-center grid-cols-2 px-4"
+            variants={itemVariants}
+          >
+            <audio ref={audioRef} src={infoSong.audioUrl}></audio>
+            <Play
+              audioRef={audioRef}
+              className="text-neutralViolet-50 hover:text-neutralViolet-200 text-sm md:text-base lg:text-lg"
+            />
+            <AddSong className="text-neutralViolet-50 hover:text-neutralViolet-200 text-sm md:text-base lg:text-lg" />
+          </motion.section>
+          <button 
+            onClick={() => setIsVisible(!isVisible)} // Cambia la visibilidad al hacer clic
+            className="absolute top-2 right-2 text-neutralViolet-50 bg-transparent"
+          >
+            {isVisible ? (
+              <FaChevronUp size={24} /> // Flecha hacia arriba
+            ) : (
+              <FaChevronDown size={24} /> // Flecha hacia abajo
+            )}
+          </button>
         </motion.section>
-      </motion.section>
+      )}
+      {!isVisible && ( // Mostrar un botón para volver a mostrar la barra
+        <button 
+          onClick={() => setIsVisible(true)} // Mostrar la barra
+          className="fixed bottom-4 right-4 text-neutralViolet-50 bg-violet-700 rounded-full p-2 shadow-lg"
+        >
+          <FaChevronDown size={24} /> {/* Flecha hacia abajo para mostrar la barra */}
+        </button>
+      )}
     </AnimatePresence>
   );
 }
