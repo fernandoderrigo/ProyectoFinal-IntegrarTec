@@ -56,11 +56,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
   const userId = tokenDecode.id;
-  const { playlistName, songs } = await request.json();
-  console.log('playlistName');
-  console.log(playlistName);
-
-  console.log(playlistName + songs);
+  const { playlistName = 'my playlist', songs } = await request.json();
 
   if (!playlistName || !songs) {
     return NextResponse.json(

@@ -2,7 +2,7 @@
 
 import { FaSearch, FaArrowLeft } from 'react-icons/fa';
 import SongList from '../../music/songs/Songs';
-import Playlist from '../../music/playlist/Playlist';
+import SelectPlaylist from '../../music/playlist/SelectPlaylist';
 import { useState, useRef, useEffect } from 'react';
 
 export default function FullSearchBar({ hideFullSearch }) {
@@ -61,12 +61,7 @@ export default function FullSearchBar({ hideFullSearch }) {
                     song.name.toLowerCase().includes(filterText.toLowerCase())
                   }
                 />
-                <Playlist
-                  filterFunction={(playlist) =>
-                    playlist.name
-                      .toLowerCase()
-                      .includes(filterText.toLowerCase())
-                  }
+                <SelectPlaylist
                 />
               </>
             )}

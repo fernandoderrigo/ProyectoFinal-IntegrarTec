@@ -1,15 +1,10 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { usePlaylist } from '@/contexts/PlaylistContext';
 import { PlaylistFallback } from '@/components/fallback/PlaylistFallback';
 import { tokenExpired } from '@/utils/jwtDecode';
 
-export default function SongsInPlaylist({
-  playlistSongs,
-  searchTerm = '',
-  onSelectedSongsChange,
-}) {
+export default function SongsInPlaylist({ playlistSongs, searchTerm = '' }) {
   const [songList, setSongList] = useState([]);
   const { selectedSongs, setSelectedSongs } = usePlaylist();
   const [loading, setLoading] = useState(true);
@@ -44,13 +39,6 @@ export default function SongsInPlaylist({
     }
     fetchSongsData();
   }, [playlistSongs, setSelectedSongs, token]);
-
-  useEffect(() => {
-    const selectedSongsData = songList
-      .filter((song) => selectedSongs.includes(song.id))
-      .map((song) => ({ id: song.id, name: song.name }));
-    onSelectedSongsChange(selectedSongsData);
-  }, [selectedSongs, songList, onSelectedSongsChange]);
 
   if (loading) {
     return <PlaylistFallback />;
